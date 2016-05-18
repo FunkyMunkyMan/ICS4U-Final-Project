@@ -1,0 +1,3 @@
+Shoot Toast: SPACE BAR
+
+Move Toast(Only up and down): Up key and Down key (W/S)
