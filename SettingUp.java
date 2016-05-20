@@ -1,43 +1,59 @@
 package settingup;
+
+//Imports
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.*;
 
-
-public class SettingUp extends BasicGame {
+/**
+ * 
+ * @author Jonah Monaghan
+ * @version 1.01
+ */
+public class SettingUp extends StateBasedGame {
  
     static int width = 640;
     static int height = 480;
    
     static boolean fullscreen = false;
     static boolean showFPS = true;
-    static String title = "Slick2D Basic Game Template";
-    static int fpslimit = 40;
-
+    
+    static final String title = "Strategic Toast Insertion (STI)";
+    static final int fpslimit = 60;
+    static final int menu = 0;
+    static final int play = 1;
+    static final int credits = 2;
+    
     public SettingUp(String title) {
         super(title);
+        this.addState(new Menu(menu));
+        this.addState(new Play(play));
+        this.addState(new Menu(credits));
     }
  
-    @Override
-    public void init(GameContainer gc) throws SlickException {
-       
-    }
- 
-    @Override
-    public void update(GameContainer gc, int delta) throws SlickException {
-       
-    }
- 
-    @Override
-    public void render(GameContainer gc, Graphics g) throws SlickException {
-       
+     @Override
+    public void initStatesList(GameContainer gc) throws SlickException {
+        this.getState(menu).init(gc, this);
+        this.getState(play).init(gc, this);
+        this.getState(credits).init(gc, this);
+        
+        this.enterState(menu);
     }
    
     public static void main(String[] args) throws SlickException {
-        AppGameContainer app = new AppGameContainer(new SettingUp(title));
-        app.setDisplayMode(width, height, fullscreen);
-        app.setSmoothDeltas(true);
-        app.setTargetFrameRate(fpslimit);
-        app.setShowFPS(showFPS);
-        app.start();
+      
+        AppGameContainer app; 
+        try{
+            app = new AppGameContainer(new SettingUp(title));
+            app.setDisplayMode(width, height, fullscreen);
+            app.setSmoothDeltas(true);
+            app.setTargetFrameRate(fpslimit);
+            app.setShowFPS(showFPS);
+            app.start();
+        }catch(SlickException e){
+            e.printStackTrace();
+        }
     }
+
+   
    
 }
