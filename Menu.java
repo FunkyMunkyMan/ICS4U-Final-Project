@@ -4,6 +4,8 @@ package sti;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import java.io.*;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.gui.TextField;
 /**
  *
  * @author Jonah Monaghan
@@ -22,22 +24,27 @@ public class Menu extends BasicGameState {
     Image bg, options, optionsHover, playNow, playNowHover;
     Image[] birds = new Image[7];
     Image[] birdsHover = new Image[7];
-    Image[] animations;
+    String[] birdTypes = new String[7];
+    String birdSelected;
+    //Font font;
+    //TrueTypeFont ttf = new TrueTypeFont((java.awt.Font) font, true);
+    //TextField nameInput = new TextField(SettingUp.app, ttf, 250, 400, 100, 200);
     
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         
-        bg = new Image("resources/images/menu.png");
-        options = new Image("resources/images/options.png");
-        optionsHover = new Image("resources/images/optionsHighlighted.png");
-        playNow = new Image("resources/images/play.png");
-        playNowHover = new Image("resources/images/playHighlighted.png");
+        bg = new Image("res/images/menu.png");
+        options = new Image("res/images/options.png");
+        optionsHover = new Image("res/images/optionsHighlighted.png");
+        playNow = new Image("res/images/play.png");
+        playNowHover = new Image("res/images/playHighlighted.png");
         try{
-            FileReader fr = new FileReader("resources/birdFiles.txt");
+            FileReader fr = new FileReader("res/birdFiles.txt");
             BufferedReader br = new BufferedReader(fr);
             for(int l = 0; l < 7; l++){
                 birds[l] = new Image(br.readLine());
                 birdsHover[l] = new Image(br.readLine());
+                birdTypes[l] = birds[l].getResourceReference();
             }
         }catch(IOException e){
             System.out.println(e);
@@ -66,22 +73,45 @@ public class Menu extends BasicGameState {
         coords[6][0] = 500;
         coords[6][1] = 350;
     }
+    Input input;
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         Play.themeSong.pause();
         getCoordinates();
         bg.draw(0,0);
-        playNow.drawCentered(500, 300);
         for(int j = 0; j < 7; j++){
-            birds[j].draw(coords[j][0], coords[j][1], 100, 100);
+            input = gc.getInput();
+            if((input.getMouseX() > coords[j][0] && input.getMouseX() < (coords[j][0]+100)) 
+                    && (input.getMouseY() > coords[j][1] && input.getMouseY() < (coords[j][1] + 100))){
+                birdsHover[j].draw(coords[j][0], coords[j][1], 100, 100);
+                birdSelected = birdTypes[j];
+                System.out.println(birdSelected);
+            }else{
+                birds[j].draw(coords[j][0], coords[j][1], 100, 100);
+            }
         }
         
+        if(input.getMouseX() > 750 && input.getMouseY() > 400){
+            optionsHover.draw(750, 400);
+            playNow.drawCentered(500, 300);
+        }else if( (input.getMouseX() > 450 && input.getMouseX() < 550) && (input.getMouseY() > 250 && input.getMouseY() < 350) ){
+            playNowHover.drawCentered(500, 300);
+            options.draw(750, 400);
+            if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
+                sbg.enterState(SettingUp.play);
+                Play.player = new Bird(birdSelected, 250, 10);
+            }
+        }else{
+            options.draw(750, 400);
+            playNow.drawCentered(500, 300);
+        }
+        
+        
     }
-    Input input;
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        input = gc.getInput();
         
+    
     }
     
 }

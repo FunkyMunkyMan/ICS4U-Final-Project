@@ -1,62 +1,33 @@
+package sti;
+
 /*
 Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
 Created: May 18th, 2016
 Purpose: projectile class for the game "STI"
 */
-public class ToastBullet {
+public class ToastBullet extends STIObject{
 //attributes
-    int speed, size, xPos, yPos, X_LIMIT, Y_LOW, Y_HIGH;
-    String imageName, toastType;
+    int size, X_LIMIT, Y_LOW, Y_HIGH;
 //constructors
     public ToastBullet(String t, String i) {
-        toastType = t;
-        imageName = i;
+        type = t;
+        imageString = i;
         //loadImageFile();
     }
-    public ToastBullet(int speed, int size, int xPos, int yPos, String imageName, String toastType) { 
+    public ToastBullet(int speed, int size, int xPos, int yPos,String toastType) { 
         this.speed = speed;
         this.size = size;
         this.xPos = xPos;
         this.yPos = yPos;
-        this.imageName = imageName;
-        this.toastType = toastType;
+        imageString = "res/" + toastType + ".png";
+        this.type = toastType;
     }
 //getters and setters for instance variables
-    public int getSpeed() {
-        return speed;
-    }
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
     public int getSize() {
         return size;
     }
     public void setSize(int size) {
         this.size = size;
-    }
-    public int getxPos() {
-        return xPos;
-    }
-    public void setxPos(int xPos) {
-        this.xPos = xPos;
-    }
-    public int getyPos() {
-        return yPos;
-    }
-    public void setyPos(int yPos) {
-        this.yPos = yPos;
-    }
-    public String getImageName() {
-        return imageName;
-    }
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-    public String getToastType() {
-        return toastType;
-    }
-    public void setToastType(String toastType) {
-        this.toastType = toastType;
     }
 //getters and setters for class variables
     public int getX_LIMIT() {

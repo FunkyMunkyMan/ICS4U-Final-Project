@@ -1,4 +1,4 @@
-package settingup;
+package sti;
 
 //Imports
 import org.newdawn.slick.*;
@@ -11,8 +11,8 @@ import org.newdawn.slick.state.*;
  */
 public class SettingUp extends StateBasedGame {
  
-    static int width = 640;
-    static int height = 480;
+    static int width = 1000;
+    static int height = 600;
    
     static boolean fullscreen = false;
     static boolean showFPS = true;
@@ -27,7 +27,7 @@ public class SettingUp extends StateBasedGame {
         super(title);
         this.addState(new Menu(menu));
         this.addState(new Play(play));
-        this.addState(new Menu(credits));
+        this.addState(new Credits(credits));
     }
  
      @Override
@@ -36,12 +36,13 @@ public class SettingUp extends StateBasedGame {
         this.getState(play).init(gc, this);
         this.getState(credits).init(gc, this);
         
-        this.enterState(menu);
+        //SettingUp.this.enterState(play); [ACTUAL LINE OF CODE]
+        this.enterState(menu); //ONLY FOR TESTING
     }
-   
+static AppGameContainer app;
     public static void main(String[] args) throws SlickException {
       
-        AppGameContainer app; 
+        //AppGameContainer app; 
         try{
             app = new AppGameContainer(new SettingUp(title));
             app.setDisplayMode(width, height, fullscreen);
