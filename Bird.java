@@ -1,4 +1,4 @@
-package sti;
+package strategictoastinsertion;
 import org.newdawn.slick.*;
 /*
 Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
@@ -7,6 +7,7 @@ Purpose: player character class for the game "Strategic Toast Insertion"
 */
 public class Bird extends STIObject{
     int score;
+    Image shooting;
     public Bird(){
         xPos = 25;
         yPos = 25;
@@ -15,11 +16,13 @@ public class Bird extends STIObject{
         imageString = "null";
         score = 0;
     }
-    public Bird(String birdType){
+    public Bird(String birdType) throws SlickException{
         this();
         this.type = birdType;
+        birdType.substring(0,(birdType.length()-4));
+        shooting = new Image(birdType + "Shooting.png");
     }
-    public Bird(String birdType, int x, int y){
+    public Bird(String birdType, int x, int y) throws SlickException{
         this(birdType);
         xPos = x;
         yPos = y;

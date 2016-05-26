@@ -1,4 +1,4 @@
-package sti;
+package strategictoastinsertion;
 /*
 Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
 Created: May 18th, 2016
@@ -53,11 +53,7 @@ public class Play extends BasicGameState{
     }
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        input = gc.getInput();
-        if(!input.isKeyPressed(Input.KEY_R)){
-        } else {
-            
-        }
+        
     }
     
     

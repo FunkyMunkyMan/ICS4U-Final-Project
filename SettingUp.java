@@ -1,4 +1,4 @@
-package sti;
+package strategictoastinsertion;
 
 //Imports
 import org.newdawn.slick.*;

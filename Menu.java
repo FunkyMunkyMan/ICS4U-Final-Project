@@ -1,4 +1,4 @@
-package sti;
+package strategictoastinsertion;
 
 //Imports
 import org.newdawn.slick.*;
@@ -85,7 +85,6 @@ public class Menu extends BasicGameState {
                     && (input.getMouseY() > coords[j][1] && input.getMouseY() < (coords[j][1] + 100))){
                 birdsHover[j].draw(coords[j][0], coords[j][1], 100, 100);
                 birdSelected = birdTypes[j];
-                System.out.println(birdSelected);
             }else{
                 birds[j].draw(coords[j][0], coords[j][1], 100, 100);
             }

@@ -1,4 +1,4 @@
-package sti;
+package strategictoastinsertion;
 
 /*
  Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan

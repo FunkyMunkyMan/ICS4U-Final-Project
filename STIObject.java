@@ -3,7 +3,7 @@ Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
 Created: May 18th, 2016
 Purpose: abstract class to handle objects for the game "Strategic Toast Insertion"
  */
-package sti;
+package strategictoastinsertion;
 
 /**
  *
