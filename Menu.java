@@ -71,30 +71,30 @@ public class Menu extends BasicGameState {
         //Flamingo
         coords[0][0] = (float) (centerX - (width / 5));
         coords[0][1] = centerY - (height / 10);
-        
+
         //Hummer
         coords[1][0] = centerX + (width / 10);
         coords[1][1] = centerY - (height / 10);
 
         //Parrot
         coords[2][0] = centerX + (width / 15);
-        coords[2][1] = centerY - (height / 5);
+        coords[2][1] = centerY - (height / 4);
 
         //Owl
-        coords[3][0] = centerX - (width / 10);
-        coords[3][1] = centerY - (height / 5);
+        coords[3][0] = centerX - (width / 7);
+        coords[3][1] = centerY - (height / 4);
 
         //Pigeon
-        coords[4][0] = centerX - (width / 20);
-        coords[4][1] = (float) (centerY - (height / 5));
+        coords[4][0] = centerX - (width / 22);
+        coords[4][1] = (float) (centerY - (height / 3.4));
 
         //Tweeter
-        coords[5][0] = (float) (centerX - (width / 5));
+        coords[5][0] = (float) (centerX - (width / 6.5));
         coords[5][1] = centerY + (height / 20);
 
         //Pelican
         coords[6][0] = centerX + (width / 20);
-        coords[6][1] = centerY + (height / 15);
+        coords[6][1] = centerY + (height / 17);
     }
     boolean draw = false;
     float circleX, circleY;
