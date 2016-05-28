@@ -7,7 +7,7 @@ import org.newdawn.slick.state.*;
 /**
  * 
  * @author Jonah Monaghan
- * @version 1.01
+ * @version 1.20
  */
 public class SettingUp extends StateBasedGame {
  
@@ -18,6 +18,7 @@ public class SettingUp extends StateBasedGame {
     static boolean showFPS = true;
     
     static final String title = "Strategic Toast Insertion (STI)";
+    static final String icon = "res/images/tweeter.png";
     static final int fpslimit = 60;
     static final int menu = 0;
     static final int play = 1;
@@ -33,23 +34,24 @@ public class SettingUp extends StateBasedGame {
      @Override
     public void initStatesList(GameContainer gc) throws SlickException {
         this.getState(menu).init(gc, this);
-        
         this.enterState(menu);
-        if(getCurrentState() == getState(play)){
+        //if(getCurrentState() == getState(play)){
             this.getState(play).init(gc, this);
-        }
         this.getState(credits).init(gc, this);
+        
+       
     }
-static AppGameContainer app;
+   
     public static void main(String[] args) throws SlickException {
       
-        //AppGameContainer app; 
+        AppGameContainer app; 
         try{
             app = new AppGameContainer(new SettingUp(title));
             app.setDisplayMode(width, height, fullscreen);
             app.setSmoothDeltas(true);
             app.setTargetFrameRate(fpslimit);
             app.setShowFPS(showFPS);
+           // app.setIcon(icon);
             app.start();
         }catch(SlickException e){
             e.printStackTrace();

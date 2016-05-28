@@ -19,7 +19,7 @@ public class ToasterBlock extends STIObject {
         this.xPos = xPos;
         this.yPos = yPos;
         this.type = toasterType;
-        this.imageString = ("src/sti/resources/" + type + ".png");
+        this.imageString = ("res/" + type + ".png");
         switch (type) {
             case "copper":
                 health = 1;
