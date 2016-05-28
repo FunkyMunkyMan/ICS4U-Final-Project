@@ -104,11 +104,15 @@ public class Menu extends BasicGameState {
         getCoordinates(); //Grab bird coordinates
         baseMenu.draw(0, 0, width, height); //Draw the menu img
         playNow.drawCentered(width / 2, height / 2); //Draw the "Play Now" button in the middle
-        options.draw(0, height / 30);
-        if ((mouseX < 200) && (mouseY <= 100) ){
-                options = optionsHover;
+        if (
+                (mouseY >= (height - (2*(birdHeight))) && (mouseX <= ((height - (2*(birdHeight)))+200))) 
+                && 
+                ((mouseX >= (width - (3*(birdWidth)))) && (mouseX <= ((width - (3*(birdWidth))+100))))
+                
+                ){
+            optionsHover.draw((width - (3*(birdWidth))), (height - (2*(birdHeight))));
         } else {
-            options = new Image("res/images/options.png");
+            options.draw((width - (3*(birdWidth))), (height - (2*(birdHeight))));
         }
         if(draw == true){
             selectedCircle.draw(circleX, circleY);
