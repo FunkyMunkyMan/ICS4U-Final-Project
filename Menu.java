@@ -24,15 +24,11 @@ public class Menu extends BasicGameState {
     Image bg, options, optionsHover, playNow, playNowHover;
     Image[] birds = new Image[7];
     Image[] birdsHover = new Image[7];
-    String[] birdTypes = new String[7];
     String birdSelected;
-    //Font font;
-    //TrueTypeFont ttf = new TrueTypeFont((java.awt.Font) font, true);
-    //TextField nameInput = new TextField(SettingUp.app, ttf, 250, 400, 100, 200);
     
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        
+//        Play.themeSong.pause();
         bg = new Image("res/images/menu.png");
         options = new Image("res/images/options.png");
         optionsHover = new Image("res/images/optionsHighlighted.png");
@@ -44,7 +40,6 @@ public class Menu extends BasicGameState {
             for(int l = 0; l < 7; l++){
                 birds[l] = new Image(br.readLine());
                 birdsHover[l] = new Image(br.readLine());
-                birdTypes[l] = birds[l].getResourceReference();
             }
         }catch(IOException e){
             System.out.println(e);
@@ -74,6 +69,7 @@ public class Menu extends BasicGameState {
         coords[6][1] = 350;
     }
     Input input;
+    String birdShoot;
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         Play.themeSong.pause();
@@ -84,7 +80,8 @@ public class Menu extends BasicGameState {
             if((input.getMouseX() > coords[j][0] && input.getMouseX() < (coords[j][0]+100)) 
                     && (input.getMouseY() > coords[j][1] && input.getMouseY() < (coords[j][1] + 100))){
                 birdsHover[j].draw(coords[j][0], coords[j][1], 100, 100);
-                birdSelected = birdTypes[j];
+                birdSelected = birds[j].getResourceReference();
+                birdShoot = birdsHover[j].getResourceReference();
             }else{
                 birds[j].draw(coords[j][0], coords[j][1], 100, 100);
             }
@@ -97,8 +94,9 @@ public class Menu extends BasicGameState {
             playNowHover.drawCentered(500, 300);
             options.draw(750, 400);
             if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
+                Play.player = new Bird(birdSelected, birdShoot, 250, 10);
                 sbg.enterState(SettingUp.play);
-                Play.player = new Bird(birdSelected, 250, 10);
+                Play.themeSong.loop();
             }
         }else{
             options.draw(750, 400);
