@@ -2,6 +2,7 @@
 Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
 Created: May 18th, 2016
 Purpose: abstract class to handle objects for the game "Strategic Toast Insertion"
+Version: 1.2
  */
 package strategictoastinsertion;
 
@@ -17,8 +18,8 @@ public class STIObject {
         xPos = 0;
         yPos = 0;
         speed = 1;
-        type = "null";
-        imageString = "null";
+        type = "res/images/oh noes.jpg";
+        imageString = "res/images/oh noes.jpg";
     }
 
     public STIObject(int xPos, int yPos) {
