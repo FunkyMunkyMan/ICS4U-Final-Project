@@ -39,6 +39,8 @@ public class Menu extends BasicGameState {
     static int birdWidth = width / 10;
     static int birdHeight = height / 6;
 
+    static long startTime;
+    static long currentTime;
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
@@ -49,7 +51,7 @@ public class Menu extends BasicGameState {
         playNow = new Image("res/images/play.png");
         playNowHover = new Image("res/images/playHighlighted.png");
         selectedCircle = new Image("res/images/selectedButton.png");
-
+        
         //Read in the bird image locations from a file
         try {
             FileReader fr = new FileReader("res/birdFiles.txt");
@@ -142,6 +144,7 @@ public class Menu extends BasicGameState {
                 playNow = playNowHover;
                 if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {
                     if(draw == false){
+                        startTime = System.currentTimeMillis();
                         Play.player = new Bird(birds[1].getResourceReference(), birdsHover[1].getResourceReference());
                     }
                     sbg.enterState(SettingUp.play);

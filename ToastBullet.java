@@ -9,22 +9,12 @@ public class ToastBullet extends STIObject{
 //attributes
     int size, X_LIMIT, Y_LOW, Y_HIGH;
 //constructors
-    public ToastBullet(String t, String i) {
-        type = t;
-        imageString = i;
-        //loadImageFile();
-    }
     public ToastBullet(int x, int y){
         this.xPos = x;
         this.yPos = y;
         generateToast();
-    }
-    public ToastBullet(int speed, int size, int xPos, int yPos,String toastType) { 
-        this.speed = speed;
-        this.size = size;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.type = toastType;
+        this.speed = 1;
+        this.size = 10;
     }
 //getters and setters for instance variables
     public int getSize() {
@@ -61,10 +51,6 @@ public class ToastBullet extends STIObject{
 //movement of toast-bullet
     public void move(){
         xPos++;
-        
-    }
-//removal of toast-bullet from game
-    public void toast(){
         
     }
     

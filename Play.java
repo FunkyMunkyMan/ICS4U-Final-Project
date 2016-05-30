@@ -7,6 +7,7 @@ package strategictoastinsertion;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -28,26 +29,31 @@ public class Play extends BasicGameState {
      * @author Matthew Godfrey & Jonah Monaghan
      * @version 1.20
      */
-    static Music themeSong;
+    static Music themeSong, menuSong;
     static Image bg, playerIcon;
     Input input;
     static Bird player;
     Animation bird;
     int bgX1, bgX2, bgY;
     boolean arrayMade = false;
+    DecimalFormat number ;
 
     Image pic;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        menuSong = new Music("res/audio/thiefInTheNight.wav");
         themeSong = new Music("res/audio/portent.wav");
-        themeSong.loop();
+        number = new DecimalFormat("###,###");
+        menuSong.loop();
         background();
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-
+        if(Menu.currentTime % 3 == 0){
+            player.score++;
+        }
         bgX1 -= 2;
         bgX2 -= 2;
         bg.draw(bgX1, bgY);
@@ -57,11 +63,14 @@ public class Play extends BasicGameState {
         } else if (bgX2 < -1000) {
             bgX2 = 996;
         }
+        grphcs.drawString("Score: " + number.format(player.score), SettingUp.width - 200, 30);
         bird.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
     }
+    int counter = 0;
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        Menu.currentTime = System.currentTimeMillis();
         if (arrayMade == false) {
             setBirdArray();
             System.out.println(player.imageString);
@@ -78,6 +87,13 @@ public class Play extends BasicGameState {
         } else if (input.isKeyDown(Input.KEY_DOWN)) {
             player.moveDown();
         }
+        if (input.isKeyDown(Input.KEY_SPACE)) {
+            bird.setCurrentFrame(1);
+        }else{
+            bird.setCurrentFrame(0);
+        }
+        
+        counter++;
     }
 
     public void background() throws SlickException {
@@ -104,6 +120,7 @@ public class Play extends BasicGameState {
 
     public void setBirdArray() throws SlickException {
         arrayMade = true;
+        themeSong.loop();
         Image[] images = {new Image(player.getImageString()), new Image(player.getBirdShoot())};
         int[] duration = {300, 300};
         bird = new Animation(images, duration, false);

@@ -23,12 +23,12 @@ public class Credits extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        
+        Image bg = new Image("res/images/creditsScreen.png");
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        
+        //bg.draw();
         
     }
 
