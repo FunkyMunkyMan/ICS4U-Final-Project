@@ -14,12 +14,16 @@ public class ToastBullet extends STIObject{
         imageString = i;
         //loadImageFile();
     }
+    public ToastBullet(int x, int y){
+        this.xPos = x;
+        this.yPos = y;
+        generateToast();
+    }
     public ToastBullet(int speed, int size, int xPos, int yPos,String toastType) { 
         this.speed = speed;
         this.size = size;
         this.xPos = xPos;
         this.yPos = yPos;
-        imageString = "res/" + toastType + ".png";
         this.type = toastType;
     }
 //getters and setters for instance variables
@@ -56,10 +60,36 @@ public class ToastBullet extends STIObject{
     }
 //movement of toast-bullet
     public void move(){
+        xPos++;
         
     }
 //removal of toast-bullet from game
     public void toast(){
         
+    }
+    
+    
+    
+    
+    
+    public void generateToast(){
+        int random = (int)((Math.random()*4)+0);
+        switch(random){
+            case 0: 
+                this.imageString = "res/images/bread.png";
+                break;
+            case 1:
+                this.imageString = "res/images/waffle.png";
+                break;
+            case 2:
+                this.imageString = "res/images/fork.png";
+                break;
+            case 3:
+                this.imageString = "res/images/pepper,png";
+                break;
+            default:
+                this.imageString = "res/images/bread.png";
+                break;
+        }
     }
 }

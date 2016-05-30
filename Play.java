@@ -40,7 +40,7 @@ public class Play extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        themeSong = new Music("res/portent.wav");
+        themeSong = new Music("res/audio/portent.wav");
         themeSong.loop();
         background();
     }
