@@ -49,11 +49,11 @@ public class ToastBullet extends STIObject{
             ", Highest Y coordinate: " + Y_HIGH;
     }
 //movement of toast-bullet
-    public void move(){
-        xPos++;
-        
+    public int move(){
+        xPos+=speed;
+        return xPos;
     }
-    
+
     
     
     
@@ -71,7 +71,7 @@ public class ToastBullet extends STIObject{
                 this.imageString = "res/images/fork.png";
                 break;
             case 3:
-                this.imageString = "res/images/pepper,png";
+                this.imageString = "res/images/pepper.png";
                 break;
             default:
                 this.imageString = "res/images/bread.png";

@@ -8,6 +8,7 @@ package strategictoastinsertion;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  *
@@ -36,8 +37,9 @@ public class Play extends BasicGameState {
     Animation bird;
     int bgX1, bgX2, bgY;
     boolean arrayMade = false;
-    DecimalFormat number ;
-
+    static DecimalFormat number;
+    static ArrayList<ToastBullet> bullets = new ArrayList();
+    boolean fired = false;
     Image pic;
 
     @Override
@@ -47,6 +49,7 @@ public class Play extends BasicGameState {
         number = new DecimalFormat("###,###");
         menuSong.loop();
         background();
+         
     }
 
     @Override
@@ -65,6 +68,11 @@ public class Play extends BasicGameState {
         }
         grphcs.drawString("Score: " + number.format(player.score), SettingUp.width - 200, 30);
         bird.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
+        if(!fired){
+            
+        }else{
+            player.shoot().draw((bullets.get(bullets.size()-1)).getxPos()+Menu.birdWidth, (bullets.get(bullets.size()-1)).getyPos()+5, Menu.birdHeight/2, Menu.birdWidth/2); 
+        }
     }
     int counter = 0;
 
@@ -89,8 +97,11 @@ public class Play extends BasicGameState {
         }
         if (input.isKeyDown(Input.KEY_SPACE)) {
             bird.setCurrentFrame(1);
+            fired = true;  
+
         }else{
             bird.setCurrentFrame(0);
+            fired = false;
         }
         
         counter++;

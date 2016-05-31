@@ -1,4 +1,7 @@
 package strategictoastinsertion;
+
+import org.newdawn.slick.*;
+import org.newdawn.slick.state.*;
 /*
  Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
  Created: May 18th, 2016
@@ -7,8 +10,8 @@ package strategictoastinsertion;
  */
 
 public class Bird extends STIObject {
-
-    int score, width, height;
+    static int score;
+    int width, height;
     String birdShoot;
 
     public Bird() {
@@ -63,8 +66,10 @@ public class Bird extends STIObject {
             yPos += speed;
         }
     }
-
-    public void shoot() {
-
+    
+    public Image shoot() throws SlickException{
+        ToastBullet bullet = new ToastBullet(xPos, yPos);
+        Play.bullets.add(bullet);
+        return new Image(bullet.getImageString()) ;
     }
 }

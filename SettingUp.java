@@ -34,12 +34,9 @@ public class SettingUp extends StateBasedGame {
      @Override
     public void initStatesList(GameContainer gc) throws SlickException {
         this.getState(menu).init(gc, this);
-        this.enterState(menu);
-        //if(getCurrentState() == getState(play)){
-            this.getState(play).init(gc, this);
+        this.getState(play).init(gc, this);
         this.getState(credits).init(gc, this);
-        
-       
+        this.enterState(menu);
     }
    
     public static void main(String[] args) throws SlickException {
