@@ -67,7 +67,7 @@ public class Credits extends BasicGameState {
                     eof = true;
                 }else{
                     n += ": ";
-                    s = Play.number.format(buff.readLine());
+                    s = buff.readLine();
                     savesCounter++;
                 }
                 saves.add(n+s);
