@@ -1,5 +1,8 @@
 package strategictoastinsertion;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 /*
  Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
  Created: May 18th, 2016
@@ -7,31 +10,30 @@ package strategictoastinsertion;
  */
 public class ToasterBlock extends STIObject {
 
-    int health, CURRENT_SPEED, MAX_SPEED;
-//constructors
+    int health;
+    static int CURRENT_SPEED = 2, MAX_SPEED = 10;
+    Image toasterImg;
+    //constructors
 
-    public ToasterBlock(String t, String i) {
-        type = t;
-        imageString = i;
+    public ToasterBlock(int h) throws SlickException{
+        health = h;
+        if(h == 1){
+            imageString = "res/images/copper.png";
+        }else if(h == 2){
+            imageString = "res/images/silver.png";
+        }else if(h == 3){
+            imageString = "res/images/gold.png";
+        }
+        
+        toasterImg = new Image(imageString);
+        xPos = Menu.width - 100;
+        yPos = 50;
     }
 
-    public ToasterBlock(int xPos, int yPos, String toasterType) {
+    public ToasterBlock(int xPos, int yPos, int h) throws SlickException {
+        this(h);
         this.xPos = xPos;
         this.yPos = yPos;
-        this.type = toasterType;
-        this.imageString = ("res/" + type + ".png");
-        switch (type) {
-            case "copper":
-                health = 1;
-                break;
-            case "silver":
-                health = 2;
-                break;
-            case "gold":
-                health = 3;
-                break;
-        }
-
     }
 //getters and setters for instance variables
 
@@ -59,24 +61,38 @@ public class ToasterBlock extends STIObject {
     public void setMAX_SPEED(int MAX_SPEED) {
         this.MAX_SPEED = MAX_SPEED;
     }
+    
+    public Image getImage(){
+        return toasterImg;
+    }
+    
+    public void setImage(Image newImg){
+        this.toasterImg = newImg;
+    }
 //removal of toaster-block from game
 
     public void destroy() {
-
+        //Animation
     }
-//collision detector for the player character
-
+    
+    //collision detector for the player character
     public void birdCollide() {
-
     }
-//collision detector for a toast-bullet
-
+    
+    //collision detector for a toast-bullet
     public void toastCollide() {
 
     }
-//movement speed changer
-
-    public void accelerate() {
-
+    
+    public void move(){
+        xPos -= CURRENT_SPEED;
     }
+ 
+    //movement speed changer
+    public static void accelerate() {
+        if(CURRENT_SPEED <= 10){
+            CURRENT_SPEED++;
+        }
+    }
+    
 }

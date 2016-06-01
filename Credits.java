@@ -36,21 +36,24 @@ public class Credits extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         if(start){
             loadSaves();
+            AscendingSorter.quickSort(saves);
+            saves = AscendingSorter.getArray();
             start = false;
         }
         bg.draw(0,0);
         Play.player.score = 123456789;
         //ttf.drawString(32.0f, 32.0f, (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
-        g.drawString( (Play.player.playerName + ": " + Play.number.format(Play.player.score)), SettingUp.width/10, (SettingUp.height-(SettingUp.height/6)));
         for(int ss = 0; ss < savesCounter; ss++){
-            
+        g.drawString( saves.get(ss), SettingUp.width/10, (SettingUp.height-(SettingUp.height/6)));
         }
+    
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         
     }
+    
     int savesCounter = 0;
     public void loadSaves(){
         boolean eof = false;
@@ -64,7 +67,7 @@ public class Credits extends BasicGameState {
                     eof = true;
                 }else{
                     n += ": ";
-                    s = (String) Play.number.format(Integer.parseInt(buff.readLine()));
+                    s = Play.number.format(buff.readLine());
                     savesCounter++;
                 }
                 saves.add(n+s);

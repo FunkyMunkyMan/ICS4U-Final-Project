@@ -22,11 +22,11 @@ public class Menu extends BasicGameState {
     Input input; //input [pretty self explanitory]
 
     //Image variables / arrays
-    Image baseMenu, options, optionsHover, playNow, playNowHover; //Menu pics
+    Image baseMenu, options, optionsHover, playNow, playNowHover, selectedCircle; //Menu pics
     Image birds[] = new Image[7]; //All birds
     Image birdsHover[] = new Image[7]; //All birds after mouse interaction
-    Image selectedCircle; 
-
+    String birdScreech[] = new String[7];//Death cry of all birds
+    
     //Integers
     static int width = SettingUp.width; //width of screen
     static int height = SettingUp.height; //height of screen
@@ -59,6 +59,7 @@ public class Menu extends BasicGameState {
             for (int l = 0; l < 7; l++) {
                 birds[l] = new Image(br.readLine());
                 birdsHover[l] = new Image(br.readLine());
+                birdScreech[l] = br.readLine();
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -124,7 +125,7 @@ public class Menu extends BasicGameState {
                     draw = true;
                     circleX = coords[j][0];
                     circleY = coords[j][1];
-                    Play.player = new Bird(birds[j].getResourceReference(), birdsHover[j].getResourceReference());
+                    Play.player = new Bird(birds[j].getResourceReference(), birdsHover[j].getResourceReference(), birdScreech[j]);
                 }
                 
             } else {
@@ -145,7 +146,7 @@ public class Menu extends BasicGameState {
                 if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {
                     if(draw == false){
                         startTime = System.currentTimeMillis();
-                        Play.player = new Bird(birds[1].getResourceReference(), birdsHover[1].getResourceReference());
+                        Play.player = new Bird(birds[1].getResourceReference(), birdsHover[1].getResourceReference(), birdScreech[1]);
                     }
                     sbg.enterState(SettingUp.play);
                 }

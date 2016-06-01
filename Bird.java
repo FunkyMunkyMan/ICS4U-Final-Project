@@ -25,14 +25,14 @@ public class Bird extends STIObject {
         height = 75;
     }
 
-    public Bird(String birdImage, String birdShoot) {
+    public Bird(String birdImage, String birdShoot, String birdScreech) {
         this();
         this.imageString = birdImage;
         this.birdShoot = birdShoot;
     }
 
-    public Bird(String birdType, String birdShoot, int x, int y, int width, int height) {
-        this(birdType, birdShoot);
+    public Bird(String birdType, String birdShoot, int x, int y, int width, int height, String birdScreech) {
+        this(birdType, birdShoot, birdScreech);
         System.out.println(this.imageString);
         xPos = x;
         yPos = y;

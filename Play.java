@@ -9,7 +9,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
+import java.awt.Font;
 /**
  *
  * @author Jonah Monaghan & Matthew Godfrey
@@ -40,14 +40,17 @@ public class Play extends BasicGameState {
     static DecimalFormat number;
     static ArrayList<ToastBullet> bullets = new ArrayList();
     boolean fired = false;
-    Image pic;
     static Image pew;
-
+    TrueTypeFont ttf;
+    ArrayList<ToasterBlock> toasters = new ArrayList();
+    int difficulty = 0, toasterGen, rndGen, rndY, percentChance = 1;
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         menuSong = new Music("res/audio/thiefInTheNight.wav");
         themeSong = new Music("res/audio/portent.wav");
         number = new DecimalFormat("###,###");
+        //Font font = new Font("Palatino Linotype", Font.BOLD, 26);
+        //ttf = new TrueTypeFont(font, true;
         menuSong.loop();
         background();
     }
@@ -67,6 +70,7 @@ public class Play extends BasicGameState {
             bgX2 = 996;
         }
         grphcs.drawString("Score: " + number.format(player.score), SettingUp.width - 200, 30);
+        //ttf.drawString("Score: "+number.format(player.socre), SettingUp.width - 200, 30);
         bird.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
         bulletHeight = Menu.birdHeight/2;
         bulletWidth = Menu.birdWidth/2;
@@ -78,7 +82,9 @@ public class Play extends BasicGameState {
                     bullets.remove(q);
                 }
             }
-        
+        for (ToasterBlock currentToaster : toasters) {
+            currentToaster.toasterImg.draw(currentToaster.xPos, currentToaster.yPos, Menu.birdHeight, Menu.birdWidth);
+        }
         
         
     }
@@ -86,6 +92,47 @@ public class Play extends BasicGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         Menu.currentTime = System.currentTimeMillis();
+        rndGen = (int) (Math.random() * 99) + 1;
+
+        if (rndGen <= percentChance) {
+            rndY = (((int) (Math.random() * 5) + 1) * Menu.birdWidth) + 5;
+            if (difficulty < 50) {
+                toasters.add(new ToasterBlock(Menu.width - 10, rndY, 1));
+                difficulty++;
+            } else if (difficulty > 50 && difficulty < 100) {
+                toasterGen = (int)(Math.random() * 2) + 1;
+                toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                difficulty++;
+            } else if(difficulty > 100 && difficulty < 150){
+                toasterGen = (int)(Math.random() * 3) + 1;
+                toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                difficulty++;
+            }else if(difficulty > 150 && difficulty < 200){
+                toasterGen = (int)(Math.random() * 2) + 2;
+                toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                difficulty++;
+            }else if(difficulty > 200 && difficulty < 250){
+                toasterGen = (int)(Math.random() * 1) + 3;
+                toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                difficulty++;
+            }
+        }
+        
+        if(difficulty % 50 == 0){
+        difficulty++;
+        ToasterBlock.accelerate();
+        }
+        
+        if(difficulty == 150){
+            percentChance++;
+        }
+        
+        for (ToasterBlock currentToaster : toasters) {
+            if (currentToaster.xPos > Menu.width) {
+                toasters.remove(currentToaster);
+            }
+            currentToaster.move();
+        }
         if (arrayMade == false) {
             setBirdArray();
         }
