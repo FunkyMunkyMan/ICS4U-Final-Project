@@ -3,7 +3,7 @@ package strategictoastinsertion;
 //Imports
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
-
+import java.awt.Font;
 /**
  *
  * @author Jonah Monaghan
@@ -24,14 +24,15 @@ public class Credits extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         bg = new Image("res/images/creditsScreen.png");
-        
     }
+    Font font = new Font("Palatino Linotype", Font.BOLD, 32);
+    TrueTypeFont ttf = new TrueTypeFont(font,true);
+    
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(0,0);
-//        Play.player.playerName = "GADREY";
         Play.player.score = 123456789;
-        g.drawString((Play.player.playerName + ": " + Play.number.format(Play.player.score)), SettingUp.width/10, (SettingUp.height-(SettingUp.height/6)));
+        ttf.drawString(32.0f, 32.0f, (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
     }
 
     @Override
