@@ -13,6 +13,7 @@ public class Bird extends STIObject {
     static int score;
     int width, height;
     String birdShoot;
+    static String playerName = "GADFREY";
 
     public Bird() {
         xPos = 25;
@@ -69,7 +70,6 @@ public class Bird extends STIObject {
     
     public ToastBullet shoot() throws SlickException{
         ToastBullet bullet = new ToastBullet(xPos+Menu.birdWidth+1, yPos+5);
-        Play.pew = new Image(bullet.getImageString());
         return bullet;
     }
 }

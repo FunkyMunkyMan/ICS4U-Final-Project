@@ -36,7 +36,7 @@ public class SettingUp extends StateBasedGame {
         this.getState(menu).init(gc, this);
         this.getState(play).init(gc, this);
         this.getState(credits).init(gc, this);
-        this.enterState(menu);
+        this.enterState(credits);
     }
    
     public static void main(String[] args) throws SlickException {

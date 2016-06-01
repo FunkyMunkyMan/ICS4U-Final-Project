@@ -26,11 +26,12 @@ public class Credits extends BasicGameState {
         bg = new Image("res/images/creditsScreen.png");
         
     }
-
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(0,0);
-        g.drawString(Play.number.format(Play.player.score), 5, 5);
+//        Play.player.playerName = "GADREY";
+        Play.player.score = 123456789;
+        g.drawString((Play.player.playerName + ": " + Play.number.format(Play.player.score)), SettingUp.width/10, (SettingUp.height-(SettingUp.height/6)));
     }
 
     @Override

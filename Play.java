@@ -71,6 +71,7 @@ public class Play extends BasicGameState {
         bulletHeight = Menu.birdHeight/2;
         bulletWidth = Menu.birdWidth/2;
             for(int q = 0; q < (bullets.size()); q++){
+                pew = new Image(bullets.get(q).getImageString());
                 bullets.get(q).move();
                 pew.draw( ((bullets.get(q)).getxPos()), ((bullets.get(q)).getyPos()), bulletHeight, bulletWidth );
                 if(bullets.get(q).getxPos() > Menu.width){
@@ -81,8 +82,7 @@ public class Play extends BasicGameState {
         
         
     }
-    int counter = 0;
-    int bulletHeight, bulletWidth;
+    int counter = 0, bulletHeight, bulletWidth;
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         Menu.currentTime = System.currentTimeMillis();
