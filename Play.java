@@ -41,6 +41,7 @@ public class Play extends BasicGameState {
     static ArrayList<ToastBullet> bullets = new ArrayList();
     boolean fired = false;
     Image pic;
+    static Image pew;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -49,7 +50,6 @@ public class Play extends BasicGameState {
         number = new DecimalFormat("###,###");
         menuSong.loop();
         background();
-         
     }
 
     @Override
@@ -68,21 +68,26 @@ public class Play extends BasicGameState {
         }
         grphcs.drawString("Score: " + number.format(player.score), SettingUp.width - 200, 30);
         bird.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
-        if(!fired){
-            
-        }else{
-            player.shoot().draw((bullets.get(bullets.size()-1)).getxPos()+Menu.birdWidth, (bullets.get(bullets.size()-1)).getyPos()+5, Menu.birdHeight/2, Menu.birdWidth/2); 
-        }
+        bulletHeight = Menu.birdHeight/2;
+        bulletWidth = Menu.birdWidth/2;
+            for(int q = 0; q < (bullets.size()); q++){
+                bullets.get(q).move();
+                pew.draw( ((bullets.get(q)).getxPos()), ((bullets.get(q)).getyPos()), bulletHeight, bulletWidth );
+                if(bullets.get(q).getxPos() > Menu.width){
+                    bullets.remove(q);
+                }
+            }
+        
+        
+        
     }
     int counter = 0;
-
+    int bulletHeight, bulletWidth;
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         Menu.currentTime = System.currentTimeMillis();
         if (arrayMade == false) {
             setBirdArray();
-            System.out.println(player.imageString);
-            System.out.println(player.birdShoot);
         }
         input = gc.getInput();
         if (!input.isKeyPressed(Input.KEY_R)) {
@@ -97,11 +102,11 @@ public class Play extends BasicGameState {
         }
         if (input.isKeyDown(Input.KEY_SPACE)) {
             bird.setCurrentFrame(1);
-            fired = true;  
-
+            if (input.isKeyPressed(Input.KEY_SPACE)) {
+                bullets.add(player.shoot());
+            }
         }else{
             bird.setCurrentFrame(0);
-            fired = false;
         }
         
         counter++;

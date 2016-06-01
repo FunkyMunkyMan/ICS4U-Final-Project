@@ -67,9 +67,9 @@ public class Bird extends STIObject {
         }
     }
     
-    public Image shoot() throws SlickException{
-        ToastBullet bullet = new ToastBullet(xPos, yPos);
-        Play.bullets.add(bullet);
-        return new Image(bullet.getImageString()) ;
+    public ToastBullet shoot() throws SlickException{
+        ToastBullet bullet = new ToastBullet(xPos+Menu.birdWidth+1, yPos+5);
+        Play.pew = new Image(bullet.getImageString());
+        return bullet;
     }
 }

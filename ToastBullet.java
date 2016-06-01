@@ -7,13 +7,13 @@ Purpose: projectile class for the game "STI"
 */
 public class ToastBullet extends STIObject{
 //attributes
-    int size, X_LIMIT, Y_LOW, Y_HIGH;
+    static int size, X_LIMIT, Y_LOW, Y_HIGH;
 //constructors
     public ToastBullet(int x, int y){
         this.xPos = x;
         this.yPos = y;
-        generateToast();
-        this.speed = 1;
+        this.imageString = generateToast();
+        this.speed = 5;
         this.size = 10;
     }
 //getters and setters for instance variables
@@ -49,33 +49,36 @@ public class ToastBullet extends STIObject{
             ", Highest Y coordinate: " + Y_HIGH;
     }
 //movement of toast-bullet
-    public int move(){
-        xPos+=speed;
-        return xPos;
+    public void move(){
+        if(xPos < (SettingUp.width+10)){
+                xPos+=speed;
+        }
     }
 
     
     
     
     
-    public void generateToast(){
+    public String generateToast(){
+        String file;
         int random = (int)((Math.random()*4)+0);
         switch(random){
             case 0: 
-                this.imageString = "res/images/bread.png";
+                file = "res/images/bread.png";
                 break;
             case 1:
-                this.imageString = "res/images/waffle.png";
+                file = "res/images/waffle.png";
                 break;
             case 2:
-                this.imageString = "res/images/fork.png";
+                file = "res/images/fork.png";
                 break;
             case 3:
-                this.imageString = "res/images/pepper.png";
+                file = "res/images/pepper.png";
                 break;
             default:
-                this.imageString = "res/images/bread.png";
+                file = "res/images/bread.png";
                 break;
         }
+        return file;
     }
 }
