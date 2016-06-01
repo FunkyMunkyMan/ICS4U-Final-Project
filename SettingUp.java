@@ -18,7 +18,7 @@ public class SettingUp extends StateBasedGame {
     static boolean showFPS = true;
     
     static final String title = "Strategic Toast Insertion (STI)";
-    static final String icon = "res/images/tweeter.png";
+    static final String icon = "res/images/oh noes.jpg";
     static final int fpslimit = 60;
     static final int menu = 0;
     static final int play = 1;
@@ -48,7 +48,7 @@ public class SettingUp extends StateBasedGame {
             app.setSmoothDeltas(true);
             app.setTargetFrameRate(fpslimit);
             app.setShowFPS(showFPS);
-           // app.setIcon(icon);
+            app.setIcon(icon);
             app.start();
         }catch(SlickException e){
             e.printStackTrace();
