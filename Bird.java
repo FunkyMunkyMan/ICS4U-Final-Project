@@ -13,7 +13,7 @@ public class Bird extends STIObject {
     static int score;
     int width, height;
     String birdShoot;
-    static String playerName = "Godfrey";
+    static String playerName = "GADfrey";
 
     public Bird() {
         xPos = 25;

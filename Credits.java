@@ -29,7 +29,7 @@ public class Credits extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         bg = new Image("res/images/creditsScreen.png");
         start = true;
-        Play.player.score = 1;
+        Play.player.score = 666;
     }
     //Font font = new Font("Palatino Linotype", Font.BOLD, 32);
     //TrueTypeFont ttf = new TrueTypeFont(font,true);
@@ -38,10 +38,10 @@ public class Credits extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(0,0);
         //ttf.drawString(32.0f, 32.0f, (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
-        for(int ss = 0; ss < savesCounter; ss++){
-            g.drawString( names.get(ss)+scores.get(ss), SettingUp.width/10, ((SettingUp.height/6)+(ss*100)) );
+        g.drawString( Play.player.playerName+Play.player.score, SettingUp.width/10, SettingUp.height-(2*(SettingUp.height/6))+5);
+        for(int ss = 0; ss < 5; ss++){
+            g.drawString( names.get(ss)+scores.get(ss), SettingUp.width/10, ((SettingUp.height/6)+(ss*50)) );
         }
-        g.drawString( Play.player.playerName+": "+Play.player.score, SettingUp.width/10, SettingUp.height-(2*(SettingUp.height/6)));
         if(prevScore == 0){}else{
                g.drawString("Previous: "+prevScore, SettingUp.width/10, SettingUp.height-(SettingUp.height/6)); 
         }
@@ -51,10 +51,7 @@ public class Credits extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         if(start){
             loadSaves();
-            prevScore = linearSearch(names, Play.player.playerName);
-            Play.player.playerName+=": ";
-            names.add(0,Play.player.playerName);
-            scores.add(0,Play.player.score);
+//          prevScore = linearSearch(names, Play.player.playerName);
             AscendingSorter.quickSort(scores);
             scores = AscendingSorter.getArray();
             start = false;
@@ -93,6 +90,9 @@ public class Credits extends BasicGameState {
         }catch(IOException e){
             System.out.println(e);
         }
-        
+        Play.player.playerName+=": ";
+        names.add(Play.player.playerName);
+        scores.add(Play.player.score);
+        savesCounter++;
     }
 }
