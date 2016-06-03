@@ -155,7 +155,7 @@ public class Play extends BasicGameState {
         for (int j = 0; j < toasters.size(); j++) {
             ToasterBlock currentToaster = toasters.get(j);
             Shape currentShape = toastersCollision.get(toasters.indexOf(currentToaster));
-            if (isAlive) {
+               if (isAlive) {
                 currentToaster.move();
                 currentShape.setLocation(currentToaster.xPos, currentToaster.yPos);
             }
@@ -173,11 +173,24 @@ public class Play extends BasicGameState {
                     toastersCollision.remove(currentShape);
                     System.out.println("Toaster Destroyed");
                     bullets.remove(j);
+                    System.out.println("."+bullets.get(j));
                     bulletCollision.remove(j);
                 }
             }
         }
-
+        for(int j = 0; j < bullets.size(); j++){
+            bullets.get(j).move();
+            if (bullets.get(j).getxPos() > Menu.width) {
+                bullets.remove(j);
+                bulletCollision.remove(j);
+            }
+            if (!isAlive) {
+                bullets.remove(j);
+                bulletCollision.remove(j);
+            }
+            
+        }
+        
         if (arrayMade == false) {
             setBirdArray();
         }
@@ -210,33 +223,6 @@ public class Play extends BasicGameState {
         shapeY = player.getyPos();
         birdRect.setLocation(shapeX, shapeY);
         
-        
-        /*for(int j = 0; j < bullets.size(); j++){
-            
-            if (bullets.get(j).getxPos() < Menu.width) {
-                
-                bullets.get(j).move();
-            }else{
-                bullets.remove(j);
-                bulletCollision.remove(j);
-            }
-            if (!isAlive) {
-                bullets.remove(j);
-                bulletCollision.remove(j);
-            }
-        }*/
-        for(int j = 0; j < bullets.size(); j++){
-            bullets.get(j).move();
-            if (bullets.get(j).getxPos() > Menu.width) {
-                bullets.remove(j);
-                bulletCollision.remove(j);
-            }
-            if (!isAlive) {
-                bullets.remove(j);
-                bulletCollision.remove(j);
-            }
-            
-        }
     }
 
     public void background() throws SlickException {
