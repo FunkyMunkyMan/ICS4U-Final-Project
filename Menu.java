@@ -22,7 +22,8 @@ public class Menu extends BasicGameState {
     Input input; //input [pretty self explanitory]
 
     //Image variables / arrays
-    Image baseMenu, options, optionsHover, playNow, playNowHover, selectedCircle; //Menu pics
+    Image baseMenu, options, playNow, playNowHover, selectedCircle, nameButton, nameBlank; //Menu pics
+    static Image optionsHover;
     Image birds[] = new Image[7]; //All birds
     Image birdsHover[] = new Image[7]; //All birds after mouse interaction
     String birdScreech[] = new String[7];//Death cry of all birds
@@ -51,7 +52,8 @@ public class Menu extends BasicGameState {
         playNow = new Image("res/images/play.png");
         playNowHover = new Image("res/images/playHighlighted.png");
         selectedCircle = new Image("res/images/selectedButton.png");
-        
+        //nameButton = new Image("res/images/enterName.png");
+        //nameBlank = new Image("res/images/blank.png");
         //Read in the bird image locations from a file
         try {
             FileReader fr = new FileReader("res/birdFiles.txt");
@@ -108,6 +110,8 @@ public class Menu extends BasicGameState {
         baseMenu.draw(0, 0, width, height); //Draw the menu img
         playNow.drawCentered(width / 2, height / 2); //Draw the "Play Now" button in the middle
         options.draw(0, height / 30);
+        //nameButton.draw((width/100), (height-(3*(height/6))));
+        //nameBlank.draw((width/100),(height-(2*(height/6))));
         if ((mouseX < 200) && (mouseY <= 100) ){
                 options = optionsHover;
         } else {
@@ -148,6 +152,7 @@ public class Menu extends BasicGameState {
                         startTime = System.currentTimeMillis();
                         Play.player = new Bird(birds[1].getResourceReference(), birdsHover[1].getResourceReference(), birdScreech[1]);
                     }
+                    
                     sbg.enterState(SettingUp.play);
                 }
             }

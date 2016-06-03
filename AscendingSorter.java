@@ -40,10 +40,10 @@ public class AscendingSorter{
         int pivot = array.get(lowIndex+(highIndex-lowIndex)/2);
         // Divide into two arrays
         while (l <= h) {
-            while (array.get(l) < pivot) {
+            while (array.get(l) > pivot) {
                 l++;
             }
-            while (array.get(h) > pivot) {
+            while (array.get(h) < pivot) {
                 h--;
             }
             if (l <= h) {
@@ -69,6 +69,9 @@ public class AscendingSorter{
        int tempNum = array.get(l);
        array.set(l, array.get(h));
        array.set(h, tempNum);
+       String tempStr = Credits.names.get(l);
+       Credits.names.set(l, Credits.names.get(h));
+       Credits.names.set(h, tempStr);
    }
    
    public static ArrayList getArray(){

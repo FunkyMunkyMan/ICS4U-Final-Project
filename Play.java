@@ -10,6 +10,9 @@ import org.newdawn.slick.state.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.awt.Font;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+
 /**
  *
  * @author Jonah Monaghan & Matthew Godfrey
@@ -31,108 +34,145 @@ public class Play extends BasicGameState {
      * @version 1.20
      */
     static Music themeSong, menuSong;
-    static Image bg, playerIcon;
+    static Image bg, playerIcon, dead, pew;
     Input input;
     static Bird player;
-    Animation bird;
+    static Animation bird;
     int bgX1, bgX2, bgY;
-    boolean arrayMade = false;
+    static boolean arrayMade = false;
     static DecimalFormat number;
     static ArrayList<ToastBullet> bullets = new ArrayList();
     boolean fired = false;
-    static Image pew;
+    int bulletHeight, bulletWidth;
     TrueTypeFont ttf;
-    ArrayList<ToasterBlock> toasters = new ArrayList();
-    int difficulty = 0, toasterGen, rndGen, rndY, percentChance = 1;
+    static boolean isAlive = true;
+    static ArrayList<ToasterBlock> toasters = new ArrayList();
+    static ArrayList<Shape> toastersCollision = new ArrayList();
+    int shapeX, shapeY, rndY, rndGen, toasterGen, difficulty = 0;
+    int percentChance = 1;
+    static long deathTime = -1;
+    Shape birdRect;
+
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         menuSong = new Music("res/audio/thiefInTheNight.wav");
         themeSong = new Music("res/audio/portent.wav");
         number = new DecimalFormat("###,###");
-        //Font font = new Font("Palatino Linotype", Font.BOLD, 26);
-        //ttf = new TrueTypeFont(font, true;
+        Font font = new Font("Palatino Linotype", Font.BOLD, 26);
+
+        ttf = new TrueTypeFont(font, true);
         menuSong.loop();
         background();
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-        if(Menu.currentTime % 3 == 0){
-            player.score++;
+        if (isAlive) {
+            if (Menu.currentTime % 3 == 0) {
+                player.score++;
+            }
+            bgX1 -= 2;
+            bgX2 -= 2;
         }
-        bgX1 -= 2;
-        bgX2 -= 2;
+        if (!isAlive) {
+            player.moveDown();
+        }
         bg.draw(bgX1, bgY);
         bg.draw(bgX2, bgY);
-        if (bgX1 < -1000) {
-            bgX1 = 996;
-        } else if (bgX2 < -1000) {
-            bgX2 = 996;
+        if (bgX1 < -Menu.width) {
+            bgX1 = Menu.width - 3;
+        } else if (bgX2 < -Menu.width) {
+            bgX2 = Menu.width - 3;
         }
-        grphcs.drawString("Score: " + number.format(player.score), SettingUp.width - 200, 30);
-        //ttf.drawString("Score: "+number.format(player.socre), SettingUp.width - 200, 30);
-        bird.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
-        bulletHeight = Menu.birdHeight/2;
-        bulletWidth = Menu.birdWidth/2;
-            for(int q = 0; q < (bullets.size()); q++){
-                pew = new Image(bullets.get(q).getImageString());
-                bullets.get(q).move();
-                pew.draw( ((bullets.get(q)).getxPos()), ((bullets.get(q)).getyPos()), bulletHeight, bulletWidth );
-                if(bullets.get(q).getxPos() > Menu.width){
-                    bullets.remove(q);
-                }
+        if (isAlive) {
+            bird.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
+        } else {
+            dead.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
+        }
+        bulletHeight = Menu.birdHeight / 2;
+        bulletWidth = Menu.birdWidth / 2;
+        for (int q = 0; q < (bullets.size()); q++) {
+            pew = new Image(bullets.get(q).getImageString());
+            bullets.get(q).move();
+            pew.draw(((bullets.get(q)).getxPos()), ((bullets.get(q)).getyPos()), bulletHeight, bulletWidth);
+            if (bullets.get(q).getxPos() > Menu.width) {
+                bullets.remove(q);
             }
-        for (ToasterBlock currentToaster : toasters) {
-            currentToaster.toasterImg.draw(currentToaster.xPos, currentToaster.yPos, Menu.birdHeight, Menu.birdWidth);
+            if (!isAlive) {
+                bullets.remove(q);
+            }
         }
-        
-        
+        for (ToasterBlock toaster : toasters) {
+            toaster.toasterImg.draw(toaster.xPos, toaster.yPos, Menu.birdHeight, Menu.birdWidth);
+        }
+        ttf.drawString(SettingUp.width - 200, 10, "Score: " + number.format(player.score));
     }
-    int counter = 0, bulletHeight, bulletWidth;
+
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         Menu.currentTime = System.currentTimeMillis();
+        if (deathTime != -1) {
+            if (Menu.currentTime > (deathTime + 3000)) {
+                sbg.enterState(SettingUp.credits);
+            }
+        }
         rndGen = (int) (Math.random() * 99) + 1;
 
         if (rndGen <= percentChance) {
-            rndY = (((int) (Math.random() * 5) + 1) * Menu.birdWidth) + 5;
+            rndY = (((int) (Math.random() * 6) + 1) * Menu.birdWidth) + 5;
             if (difficulty < 50) {
                 toasters.add(new ToasterBlock(Menu.width - 10, rndY, 1));
+                toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                 difficulty++;
             } else if (difficulty > 50 && difficulty < 100) {
-                toasterGen = (int)(Math.random() * 2) + 1;
+                toasterGen = (int) (Math.random() * 2) + 1;
                 toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                 difficulty++;
-            } else if(difficulty > 100 && difficulty < 150){
-                toasterGen = (int)(Math.random() * 3) + 1;
+            } else if (difficulty > 100 && difficulty < 150) {
+                toasterGen = (int) (Math.random() * 3) + 1;
                 toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                 difficulty++;
-            }else if(difficulty > 150 && difficulty < 200){
-                toasterGen = (int)(Math.random() * 2) + 2;
+            } else if (difficulty > 150 && difficulty < 200) {
+                toasterGen = (int) (Math.random() * 2) + 2;
                 toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                 difficulty++;
-            }else if(difficulty > 200 && difficulty < 250){
-                toasterGen = (int)(Math.random() * 1) + 3;
+            } else if (difficulty > 200) {
+                toasterGen = (int) (Math.random() * 1) + 3;
                 toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));
+                toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                 difficulty++;
             }
         }
-        
-        if(difficulty % 50 == 0){
-        difficulty++;
-        ToasterBlock.accelerate();
+
+        if (difficulty % 50 == 0) {
+            difficulty++;
+            ToasterBlock.accelerate();
         }
-        
-        if(difficulty == 150){
+
+        if (difficulty == 150) {
             percentChance++;
         }
-        
-        for (ToasterBlock currentToaster : toasters) {
-            if (currentToaster.xPos > Menu.width) {
-                toasters.remove(currentToaster);
+
+        for (int j = 0; j < toasters.size(); j++) {
+            ToasterBlock currentToaster = toasters.get(j);
+            Shape currentShape = toastersCollision.get(toasters.indexOf(currentToaster));
+            if (isAlive) {
+                currentToaster.move();
+                currentShape.setLocation(currentToaster.xPos, currentToaster.yPos);
             }
-            currentToaster.move();
+            if (currentToaster.xPos < 0 - Menu.birdWidth) {
+                toasters.remove(currentToaster);
+                toastersCollision.remove(currentShape);
+            }
+            if (birdRect.intersects(toastersCollision.get(j))) {
+                player.die();
+                deathTime = System.currentTimeMillis();
+            }
         }
+
         if (arrayMade == false) {
             setBirdArray();
         }
@@ -143,20 +183,28 @@ public class Play extends BasicGameState {
         }
         bird.draw(player.getxPos(), player.getyPos());
         if (input.isKeyDown(Input.KEY_UP)) {
-            player.moveUp();
+            if (isAlive) {
+                player.moveUp();
+            }
         } else if (input.isKeyDown(Input.KEY_DOWN)) {
-            player.moveDown();
+            if (isAlive) {
+                player.moveDown();
+            }
         }
         if (input.isKeyDown(Input.KEY_SPACE)) {
-            bird.setCurrentFrame(1);
-            if (input.isKeyPressed(Input.KEY_SPACE)) {
-                bullets.add(player.shoot());
+            if (isAlive) {
+                bird.setCurrentFrame(1);
+                if (input.isKeyPressed(Input.KEY_SPACE)) {
+                    bullets.add(player.shoot());
+                }
             }
-        }else{
+        } else {
             bird.setCurrentFrame(0);
         }
-        
-        counter++;
+        shapeX = player.getxPos();
+        shapeY = player.getyPos();
+        birdRect.setLocation(shapeX, shapeY);
+
     }
 
     public void background() throws SlickException {
@@ -184,9 +232,11 @@ public class Play extends BasicGameState {
     public void setBirdArray() throws SlickException {
         arrayMade = true;
         themeSong.loop();
-        Image[] images = {new Image(player.getImageString()), new Image(player.getBirdShoot())};
-        int[] duration = {300, 300};
+        dead = new Image(player.getBirdDead());
+        Image[] images = {new Image(player.getImageString()), new Image(player.getBirdShoot()), new Image(player.getBirdDead())};
+        int[] duration = {300, 300, 300};
         bird = new Animation(images, duration, false);
+        birdRect = new Rectangle(player.getxPos(), player.getyPos(), player.getWidth(), player.getHeight());
     }
 
 }

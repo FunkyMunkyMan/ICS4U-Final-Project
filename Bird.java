@@ -13,7 +13,8 @@ public class Bird extends STIObject {
     static int score;
     int width, height;
     String birdShoot;
-    static String playerName = "GADfrey";
+    String birdDead =  "res/images/hiyoko.png";
+    static String playerName = "GADFREY";
 
     public Bird() {
         xPos = 25;
@@ -31,9 +32,8 @@ public class Bird extends STIObject {
         this.birdShoot = birdShoot;
     }
 
-    public Bird(String birdType, String birdShoot, int x, int y, int width, int height, String birdScreech) {
+    public Bird(String birdType, String birdShoot, String birdScreech, int x, int y, int width, int height) {
         this(birdType, birdShoot, birdScreech);
-        System.out.println(this.imageString);
         xPos = x;
         yPos = y;
         this.width = width;
@@ -56,6 +56,38 @@ public class Bird extends STIObject {
         this.birdShoot = birdShoot;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getBirdDead() {
+        return birdDead;
+    }
+
+    public void setBirdDead(String birdDead) {
+        this.birdDead = birdDead;
+    }
+
+    public static String getPlayerName() {
+        return playerName;
+    }
+
+    public static void setPlayerName(String playerName) {
+        Bird.playerName = playerName;
+    }
+
     public void moveUp() {
         if (yPos > 0) {
             yPos -= speed;
@@ -66,6 +98,10 @@ public class Bird extends STIObject {
         if (yPos < Menu.height - height) {
             yPos += speed;
         }
+    }
+    
+    public void die(){
+        Play.isAlive = false;
     }
     
     public ToastBullet shoot() throws SlickException{
