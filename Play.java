@@ -43,7 +43,7 @@ public class Play extends BasicGameState {
     static DecimalFormat number;
     static ArrayList<ToastBullet> bullets = new ArrayList();
     boolean fired = false;
-    int bulletHeight, bulletWidth;
+    int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2;
     TrueTypeFont ttf;
     static boolean isAlive = true;
     static ArrayList<ToasterBlock> toasters = new ArrayList();
@@ -89,8 +89,7 @@ public class Play extends BasicGameState {
         } else {
             dead.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
         }
-        bulletHeight = Menu.birdHeight / 2;
-        bulletWidth = Menu.birdWidth / 2;
+        
         for (int q = 0; q < (bullets.size()); q++) {
             pew = new Image(bullets.get(q).getImageString());
             bullets.get(q).move();
@@ -119,7 +118,7 @@ public class Play extends BasicGameState {
         rndGen = (int) (Math.random() * 99) + 1;
 
         if (rndGen <= percentChance) {
-            rndY = (((int) (Math.random() * 6) + 1) * Menu.birdWidth) + 5;
+            rndY = (((int) (Math.random() * 6) + 0) * Menu.birdWidth) + 5;
             if (difficulty < 50) {
                 toasters.add(new ToasterBlock(Menu.width - 10, rndY, 1));
                 toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));

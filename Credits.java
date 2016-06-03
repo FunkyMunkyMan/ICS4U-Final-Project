@@ -51,6 +51,7 @@ public class Credits extends BasicGameState {
             g.drawString( (names.get(ss)+scores.get(ss)), SettingUp.width/10, ((SettingUp.height/6)+(ss*50)) );
             
         }
+        //g.drawString(prevScore, SettingUp.width/10, SettingUp.height-(SettingUp.height/6));
         
         if(mouseX < 200 && mouseY < 100){
             backButton.draw(0,0);
