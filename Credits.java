@@ -113,6 +113,10 @@ public class Credits extends BasicGameState {
         }catch(IOException e){
             System.out.println(e);
         }
+        Play.player.playerName+=": ";
+        names.add(Play.player.playerName); 
+        scores.add(Play.player.score);
+        savesCounter++;
         scoreSearch = linearSearch(names, Play.player.playerName);
         if(scoreSearch == -1){
             prevScore = "No previous scores found";
@@ -120,10 +124,6 @@ public class Credits extends BasicGameState {
             prevScore = "Previous Score: " + scores.get(scoreSearch);
         }
         System.out.println(prevScore);
-        Play.player.playerName+=": ";
-        names.add(Play.player.playerName); 
-        scores.add(Play.player.score);
-        savesCounter++;       
         AscendingSorter.quickSort(scores);
         scores = AscendingSorter.getArray();
     }
