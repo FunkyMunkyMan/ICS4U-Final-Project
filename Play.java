@@ -54,6 +54,7 @@ public class Play extends BasicGameState {
     int percentChance = 1;
     static long deathTime = -1;
     Shape birdRect;
+    ToastBullet projectile;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -112,8 +113,53 @@ public class Play extends BasicGameState {
                 sbg.enterState(SettingUp.credits);
             }
         }
+        
+        for(int j = 0; j < bullets.size(); j++){
+            projectile = bullets.get(j);
+            box = bulletCollision.get(bullets.indexOf(projectile));
+            if(isAlive){
+                projectile.move();
+                box.setLocation(projectile.getxPos(), projectile.getyPos());
+                if (projectile.getxPos() > Menu.width) {
+                    bullets.remove(projectile);
+                    bulletCollision.remove(box);
+                }
+            }else{
+                bullets.remove(projectile);
+                bulletCollision.remove(box);
+            }
+        }
+        
+        for (int j = 0; j < toasters.size(); j++) {
+            ToasterBlock currentToaster = toasters.get(j);
+            Shape currentShape = toastersCollision.get(toasters.indexOf(currentToaster));
+            if (isAlive) {
+                currentToaster.move();
+                currentShape.setLocation(currentToaster.xPos, currentToaster.yPos);
+            }
+            if (currentToaster.xPos <  0 /*0 - (Menu.birdWidth * 2)*/) {
+                toasters.remove(currentToaster);
+                toastersCollision.remove(currentShape);
+            }
+            if (birdRect.intersects(currentShape)) {
+                player.die();
+                deathTime = System.currentTimeMillis();
+            }
+            for(int k = 0; k < bullets.size(); k++){
+                if(box.intersects(currentShape)){
+                    toasters.remove(currentToaster);
+                    System.out.println("Toaster Destroyed ");
+                    toastersCollision.remove(currentShape);
+                    System.out.println("Toaster Shape Destroyed");
+                    bullets.remove(projectile);
+                    System.out.println("Bullet Destroyed");                    
+                    bulletCollision.remove(box);
+                    System.out.println("Bullet Shape Destroyed");
+                }
+            }
+        }
+        
         rndGen = (int) (Math.random() * 99) + 1;
-
         if (rndGen <= percentChance) {
             rndY = (((int) (Math.random() * 6) + 0) * Menu.birdWidth) + 5;
             if (difficulty < 50) {
@@ -151,45 +197,7 @@ public class Play extends BasicGameState {
         if (difficulty == 150) {
             percentChance++;
         }
-        
-        for (int j = 0; j < toasters.size(); j++) {
-            ToasterBlock currentToaster = toasters.get(j);
-            Shape currentShape = toastersCollision.get(toasters.indexOf(currentToaster));
-               if (isAlive) {
-                currentToaster.move();
-                currentShape.setLocation(currentToaster.xPos, currentToaster.yPos);
-            }
-            if (currentToaster.xPos < 0 - (Menu.birdWidth * 2)) {
-                toasters.remove(currentToaster);
-                toastersCollision.remove(currentShape);
-            }
-            if (birdRect.intersects(currentShape)) {
-                player.die();
-                deathTime = System.currentTimeMillis();
-            }
-            for(int k = 0; k < bulletCollision.size(); k++){
-                if((bulletCollision.get(k)).intersects(currentShape)){
-                    toasters.remove(currentToaster);
-                    toastersCollision.remove(currentShape);
-                    System.out.println("Toaster Destroyed");
-                    bullets.remove(j);
-                    System.out.println("."+bullets.get(j));
-                    bulletCollision.remove(j);
-                }
-            }
-        }
-        for(int j = 0; j < bullets.size(); j++){
-            bullets.get(j).move();
-            if (bullets.get(j).getxPos() > Menu.width) {
-                bullets.remove(j);
-                bulletCollision.remove(j);
-            }
-            if (!isAlive) {
-                bullets.remove(j);
-                bulletCollision.remove(j);
-            }
-            
-        }
+             
         
         if (arrayMade == false) {
             setBirdArray();
@@ -209,6 +217,7 @@ public class Play extends BasicGameState {
                 player.moveDown();
             }
         }
+        
         if (input.isKeyDown(Input.KEY_SPACE)) {
             if (isAlive) {
                 bird.setCurrentFrame(1);
@@ -222,6 +231,7 @@ public class Play extends BasicGameState {
         shapeX = player.getxPos();
         shapeY = player.getyPos();
         birdRect.setLocation(shapeX, shapeY);
+        
         
     }
 
