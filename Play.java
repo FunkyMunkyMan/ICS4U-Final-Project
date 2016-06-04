@@ -137,7 +137,7 @@ public class Play extends BasicGameState {
                 currentToaster.move();
                 currentShape.setLocation(currentToaster.xPos, currentToaster.yPos);
             }
-            if (currentToaster.xPos <  0 /*0 - (Menu.birdWidth * 2)*/) {
+            if (currentToaster.xPos <  0 - (Menu.birdWidth * 2)) {
                 toasters.remove(currentToaster);
                 toastersCollision.remove(currentShape);
             }
