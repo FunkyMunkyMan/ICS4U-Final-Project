@@ -44,14 +44,13 @@ public class Play extends BasicGameState {
     static DecimalFormat number;
     static ArrayList<ToastBullet> bullets = new ArrayList();
     boolean fired = false;
-    static int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2;
+    static int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2, difficulty = 0;
     TrueTypeFont ttf;
     static boolean isAlive = true;
     static ArrayList<ToasterBlock> toasters = new ArrayList();
     static ArrayList<Shape> bulletCollision = new ArrayList();
     static ArrayList<Shape> toastersCollision = new ArrayList();
-    int shapeX, shapeY, rndY, rndGen, toasterGen, difficulty = 0;
-    int percentChance = 1;
+    int shapeX, shapeY, rndY, rndGen, toasterGen, percentChance = 1;
     static long deathTime = -1;
     Shape birdRect;
     ToastBullet projectile;
