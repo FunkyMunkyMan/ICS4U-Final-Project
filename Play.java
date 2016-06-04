@@ -35,7 +35,6 @@ public class Play extends BasicGameState {
      */
     static Music themeSong, menuSong, creditsSong;
     static Image bg, playerIcon, dead, pew;
-    Shape box;
     Input input;
     static Bird player;
     static Animation bird;
@@ -112,13 +111,12 @@ public class Play extends BasicGameState {
                 sbg.enterState(SettingUp.credits);
             }
         }
-
         for (int j = 0; j < bullets.size(); j++) {
             projectile = bullets.get(j);
             skwair = bulletCollision.get(bullets.indexOf(projectile));
             if (isAlive) {
                 projectile.move();
-                box.setLocation(projectile.getxPos(), projectile.getyPos());
+                skwair.setLocation(projectile.getxPos(), projectile.getyPos());
                 if (projectile.getxPos() > Menu.width) {
                     bullets.remove(projectile);
                     bulletCollision.remove(skwair);
@@ -128,7 +126,6 @@ public class Play extends BasicGameState {
                 bulletCollision.remove(skwair);
             }
         }
-
         for (int j = 0; j < toasters.size(); j++) {
             ToasterBlock currentToaster = toasters.get(j);
             Shape currentShape = toastersCollision.get(toasters.indexOf(currentToaster));
@@ -149,14 +146,14 @@ public class Play extends BasicGameState {
                 deathTime = System.currentTimeMillis();
             }
             if(bullets.size() > 0){
-            for (int k = bullets.size(); k >= 0; k--) {
-                if (box.intersects(currentShape)) {
-                    toasters.remove(currentToaster);
-                    toastersCollision.remove(currentShape);
-                    bullets.remove(projectile);
-                    bulletCollision.remove(skwair);
+                for (int k = bullets.size(); k >= 0; k--) {
+                    if (skwair.intersects(currentShape)) {
+                        toasters.remove(currentToaster);
+                        toastersCollision.remove(currentShape);
+                        bullets.remove(projectile);
+                        bulletCollision.remove(skwair);
+                    }
                 }
-            }
             }
         }
         if(isAlive){
@@ -194,11 +191,9 @@ public class Play extends BasicGameState {
             difficulty++;
             ToasterBlock.accelerate();
         }
-
         if (difficulty == 150) {
             percentChance++;
         }
-
         if (arrayMade == false) {
             setBirdArray();
         }
@@ -217,16 +212,15 @@ public class Play extends BasicGameState {
                 player.moveDown();
             }
         }
-
         if (input.isKeyDown(Input.KEY_SPACE)) {
             if (isAlive) {
                 bird.setCurrentFrame(1);
                 if (Menu.currentTime > fireTime + 500) {
                     if (input.isKeyPressed(Input.KEY_SPACE)) {
-                        ToastBullet temp = player.shoot();
-                        bullets.add(temp);
-                        box = temp.getShape();
-                        bulletCollision.add(box);
+                        projectile = player.shoot();
+                        skwair = projectile.getShape();
+                        bullets.add(projectile);
+                        bulletCollision.add(skwair);
                         fireTime = System.currentTimeMillis();
                     }
                 }
