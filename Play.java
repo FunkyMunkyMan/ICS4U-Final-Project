@@ -4,7 +4,6 @@ package strategictoastinsertion;
  Created: May 18th, 2016
  Purpose: The state for basic gameplay
  */
-
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import java.text.DecimalFormat;
@@ -13,48 +12,32 @@ import java.awt.Font;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-/**
- *
- * @author Jonah Monaghan & Matthew Godfrey
- * @version 1.00
- */
 public class Play extends BasicGameState {
-
     public Play(int state) {
 
     }
-
     @Override
     public int getID() {
         return 1;
     }
-    /**
-     *
-     * @author Matthew Godfrey & Jonah Monaghan
-     * @version 1.20
-     */
-    static Music themeSong, menuSong, creditsSong;
-    static Image bg, playerIcon, dead, pew;
-    Shape box;
     Input input;
-    static Bird player;
+    Shape box, birdRect, skwair;
+    TrueTypeFont ttf;
+    static Music themeSong, menuSong, creditsSong;
     static Animation bird;
-    int bgX1, bgX2, bgY;
-    static boolean arrayMade = false;
+    static Image bg, playerIcon, dead, pew;
+    ToastBullet projectile;
+    static Bird player; 
+    int bgX1, bgX2, bgY, shapeX, shapeY, rndY, rndGen, toasterGen, percentChance = 1;
+    static int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2, difficulty = 0;
+    boolean fired = false;
+    static boolean arrayMade = false, isAlive = true;
     static DecimalFormat number;
     static ArrayList<ToastBullet> bullets = new ArrayList();
-    boolean fired = false;
-    static int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2, difficulty = 0;
-    TrueTypeFont ttf;
-    static boolean isAlive = true;
     static ArrayList<ToasterBlock> toasters = new ArrayList();
     static ArrayList<Shape> bulletCollision = new ArrayList();
     static ArrayList<Shape> toastersCollision = new ArrayList();
-    int shapeX, shapeY, rndY, rndGen, toasterGen, percentChance = 1;
-    static long deathTime = -1;
-    static long fireTime = -1;
-    Shape birdRect, skwair;
-    ToastBullet projectile;
+    static long deathTime = -1, fireTime = -1;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -63,7 +46,6 @@ public class Play extends BasicGameState {
         creditsSong = new Music("res/audio/upbeatForever.wav");
         number = new DecimalFormat("###,###");
         Font font = new Font("Palatino Linotype", Font.BOLD, 26);
-
         ttf = new TrueTypeFont(font, true);
         menuSong.loop();
         background();

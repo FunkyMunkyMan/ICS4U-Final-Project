@@ -31,17 +31,11 @@ public class Menu extends BasicGameState {
     //Integers
     static int width = SettingUp.width; //width of screen
     static int height = SettingUp.height; //height of screen
-    int centerX = width / 2;
-    int centerY = height / 2;
+    int centerX = width / 2, centerY = height / 2, mouseX, mouseY;
 
-    int mouseX;
-    int mouseY;
+    static int birdWidth = width / 10, birdHeight = height / 6;
 
-    static int birdWidth = width / 10;
-    static int birdHeight = height / 6;
-
-    static long startTime;
-    static long currentTime;
+    static long startTime, currentTime;
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
