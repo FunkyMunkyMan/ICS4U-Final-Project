@@ -94,20 +94,21 @@ public class Play extends BasicGameState {
                 sbg.enterState(SettingUp.credits);
             }
         }
-
-        for (int j = 0; j < bullets.size(); j++) {
+        
+        if (isAlive) {
+            for (int j = 0; j < bullets.size(); j++) {
             projectile = bullets.get(j);
-            skwair = bulletCollision.get(bullets.indexOf(projectile));
+            Shape currentShape = bulletCollision.get(bullets.indexOf(projectile));
             if (isAlive) {
                 projectile.move();
                 box.setLocation(projectile.getxPos(), projectile.getyPos());
                 if (projectile.getxPos() > Menu.width) {
                     bullets.remove(projectile);
-                    bulletCollision.remove(skwair);
+                    bulletCollision.remove(currentShape);
                 }
             } else {
                 bullets.remove(projectile);
-                bulletCollision.remove(skwair);
+                bulletCollision.remove(currentShape);
             }
         }
 
@@ -128,6 +129,7 @@ public class Play extends BasicGameState {
             }
             if (birdRect.intersects(currentShape)) {
                 player.die();
+                Credits.start = true;
                 deathTime = System.currentTimeMillis();
             }
             if (bullets.size() > 0) {
@@ -145,7 +147,7 @@ public class Play extends BasicGameState {
                 }
             }
         }
-        if (isAlive) {
+            
             rndGen = (int) (Math.random() * 99) + 1;
             if (rndGen <= percentChance) {
                 rndY = (((int) (Math.random() * 6) + 0) * Menu.birdWidth) + 5;

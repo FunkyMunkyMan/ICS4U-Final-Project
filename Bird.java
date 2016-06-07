@@ -19,7 +19,7 @@ public class Bird extends STIObject {
     public Bird() {
         xPos = 25;
         yPos = 100;
-        speed = 5;
+        speed = 7;
         imageString = "res/images/oh noes.jpg";
         score = 0;
         width = 75;
