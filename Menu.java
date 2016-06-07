@@ -2,6 +2,8 @@ package strategictoastinsertion;
 
 //Imports
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
@@ -22,20 +24,27 @@ public class Menu extends BasicGameState {
     Input input; //input [pretty self explanitory]
 
     //Image variables / arrays
-    Image baseMenu, options, playNow, playNowHover, selectedCircle, nameButton, nameBlank; //Menu pics
-    static Image optionsHover;
+    Image baseMenu, options, optionsHover, playNow, playNowHover, selectedCircle; //Menu pics
     Image birds[] = new Image[7]; //All birds
     Image birdsHover[] = new Image[7]; //All birds after mouse interaction
     String birdScreech[] = new String[7];//Death cry of all birds
-    
+
     //Integers
     static int width = SettingUp.width; //width of screen
     static int height = SettingUp.height; //height of screen
-    int centerX = width / 2, centerY = height / 2, mouseX, mouseY;
+    int centerX = width / 2;
+    int centerY = height / 2;
+    
+    static boolean menuSoundPlayed = false;
 
-    static int birdWidth = width / 10, birdHeight = height / 6;
+    int mouseX;
+    int mouseY;
 
-    static long startTime, currentTime;
+    static int birdWidth = width / 10;
+    static int birdHeight = height / 6;
+
+    static long startTime;
+    static long currentTime;
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
@@ -46,8 +55,7 @@ public class Menu extends BasicGameState {
         playNow = new Image("res/images/play.png");
         playNowHover = new Image("res/images/playHighlighted.png");
         selectedCircle = new Image("res/images/selectedButton.png");
-        //nameButton = new Image("res/images/enterName.png");
-        //nameBlank = new Image("res/images/blank.png");
+        
         //Read in the bird image locations from a file
         try {
             FileReader fr = new FileReader("res/birdFiles.txt");
@@ -63,9 +71,9 @@ public class Menu extends BasicGameState {
     }
 
     //Array of coordinates for birds
-    float[][] coords = new float[7][7];
+    float[][] coords = new float[9][9];
 
-    //A method setting the coordinates for the birds
+    //A method setting the coordinates for the birds and the Options button
     public void getCoordinates() {
         //Flamingo
         coords[0][0] = (float) (centerX - (width / 5));
@@ -94,6 +102,12 @@ public class Menu extends BasicGameState {
         //Pelican
         coords[6][0] = centerX + (width / 20);
         coords[6][1] = centerY + (height / 17);
+        
+        //Options
+        coords[7][0] = centerX - (width/10);
+        coords[7][1] = centerY + (height/4);
+        coords[8][0] = coords[7][0] + 200;
+        coords[8][1] = coords[7][1] + 100;
     }
     boolean draw = false;
     float circleX, circleY;
@@ -103,10 +117,8 @@ public class Menu extends BasicGameState {
         getCoordinates(); //Grab bird coordinates
         baseMenu.draw(0, 0, width, height); //Draw the menu img
         playNow.drawCentered(width / 2, height / 2); //Draw the "Play Now" button in the middle
-        options.draw(0, height / 30);
-        //nameButton.draw((width/100), (height-(3*(height/6))));
-        //nameBlank.draw((width/100),(height-(2*(height/6))));
-        if ((mouseX < 200) && (mouseY <= 100) ){
+        options.draw(coords[7][0], coords[7][1]);
+        if ( ((mouseX > coords[7][0]) && (mouseX <= coords[8][0])) && ((mouseY > coords[7][1])&&(mouseY <= coords[8][1])) ){
                 options = optionsHover;
         } else {
             options = new Image("res/images/options.png");
@@ -137,6 +149,9 @@ public class Menu extends BasicGameState {
         input = gc.getInput();
         mouseX = input.getMouseX();
         mouseY = input.getMouseY();
+        if(!menuSoundPlayed){
+            playSound();
+        }
         playNow = new Image("res/images/play.png");
         if ((mouseX >= ((width / 2) - (birdWidth/2))) && (mouseX <= ((width / 2) + (birdWidth/2)))) {
             if ((mouseY >= ((height / 2) - (birdHeight/2))) && (mouseY <= ((height / 2) + (birdHeight/2)))) {
@@ -146,7 +161,6 @@ public class Menu extends BasicGameState {
                         startTime = System.currentTimeMillis();
                         Play.player = new Bird(birds[1].getResourceReference(), birdsHover[1].getResourceReference(), birdScreech[1]);
                     }
-                    
                     sbg.enterState(SettingUp.play);
                 }
             }
@@ -156,6 +170,11 @@ public class Menu extends BasicGameState {
     @Override
     public int getID() {
         return 0;
+    }
+    
+    public void playSound(){
+        Play.menuSong.loop();
+        menuSoundPlayed = true;
     }
 
 }

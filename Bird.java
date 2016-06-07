@@ -14,7 +14,7 @@ public class Bird extends STIObject {
     int width, height;
     String birdShoot;
     String birdDead =  "res/images/hiyoko.png";
-    static String playerName = "GADFREY";
+    static String playerName = "Godfrey";
 
     public Bird() {
         xPos = 25;

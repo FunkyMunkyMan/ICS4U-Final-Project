@@ -40,27 +40,25 @@ public class Credits extends BasicGameState {
         bg = new Image("res/images/creditsScreen.png");
         backButton = new Image("res/images/back.png");
         hover = new Image("res/images/resolutionHighlight.png");
-        Font font = new Font("Palatino Linotype", Font.BOLD, 26);
+        Font font = new Font("Palatino Linotype", Font.PLAIN , 28);
         ttf = new TrueTypeFont(font, true);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(0, 0);
-        ttf.drawString((SettingUp.width / 10), (SettingUp.height - (2 * (SettingUp.height / 6)) + 5), (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
-        //g.drawString(Play.player.playerName + ": " + Play.player.score, SettingUp.width / 10, SettingUp.height - (2 * (SettingUp.height / 6)) + 5);
+        ttf.drawString((SettingUp.width / 5), (SettingUp.height - (2 * (SettingUp.height / 6))), (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
         for (int ss = 0; ss < 5; ss++) {
-            ttf.drawString(SettingUp.width / 10, ((SettingUp.height / 6) + (ss * 50)), (names.get(ss) + ": " + scores.get(ss)), Color.white);
-            //g.drawString((names.get(ss) + ": " + scores.get(ss)), SettingUp.width / 10, ((SettingUp.height / 6) + (ss * 50)));
+            ttf.drawString(SettingUp.width / 5, ((SettingUp.height / 6) + (ss * 55)), (names.get(ss) + ": " + Play.number.format(scores.get(ss))), Color.white);
         }
-        //g.drawString(prevScore, SettingUp.width / 10, SettingUp.height - (SettingUp.height / 6));//previous score drawing on screen
-         ttf.drawString(SettingUp.width / 10, SettingUp.height - (SettingUp.height / 6), prevScore, Color.white);
+        ttf.drawString(SettingUp.width / 5, SettingUp.height - (SettingUp.height / 6), prevScore, Color.white);
         if (mouseX < 200 && mouseY < 100) {
             backButton.draw(0, 0);
             hover.draw(0, 0);
             if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {
                 file.delete();
                 reload();
+                Menu.menuSoundPlayed = false;
                 sbg.enterState(SettingUp.menu);
             }
         } else {
@@ -84,7 +82,6 @@ public class Credits extends BasicGameState {
             } else {
                 prevScore = "Previous Score: " + scores.get(scoreSearch);
             }
-            System.out.println(prevScore);
             AscendingSorter.quickSort(scores);
             scores = AscendingSorter.getArray();
             start = false;
@@ -104,9 +101,11 @@ public class Credits extends BasicGameState {
         Play.deathTime = -1;
         Play.arrayMade = false;
         Play.toasters = new ArrayList();
-        Play.player.playerName = "GADFREY";
         Play.difficulty = 0;
         Play.player.score = 0;
+        Play.player.setxPos(25);
+        Play.player.setyPos(100);
+        ToasterBlock.CURRENT_SPEED = 2;
         names = new ArrayList();
         scores = new ArrayList();
         start = true;
@@ -148,9 +147,7 @@ public class Credits extends BasicGameState {
         try (PrintWriter writer = new PrintWriter(file)) {
             for (int wr = 0; wr < names.size(); wr++) {
                 writer.println(names.get(wr));
-                System.out.println(names.get(wr));
                 writer.println(scores.get(wr));
-                System.out.println(scores.get(wr));
             }
             writer.close();
         } catch (IOException e) {
