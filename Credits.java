@@ -6,6 +6,7 @@ import org.newdawn.slick.state.*;
 import java.awt.Font;
 import java.io.*;
 import java.util.ArrayList;
+
 /**
  *
  * @author Jonah Monaghan
@@ -13,70 +14,74 @@ import java.util.ArrayList;
  */
 public class Credits extends BasicGameState {
 
-    public Credits(int state){
-        
+    public Credits(int state) {
+
     }
-    
-    
+
     @Override
     public int getID() {
         return 2;
     }
     Image bg, backButton, hover;
-    String prevScore; 
+    String prevScore;
     int savesCounter = 0, mouseX, mouseY, scoreSearch = 0;
     Input input;
     static ArrayList<String> names = new ArrayList();
     static ArrayList<Integer> scores = new ArrayList();
     static boolean start = false;
+    boolean creditsSoundPlayed = false;
     static int linearCounter = 0;
     static File file;
-    //Font font = new Font("Palatino Linotype", Font.BOLD, 32);
-    //TrueTypeFont ttf = new TrueTypeFont(font,true);
-    
+    TrueTypeFont ttf;
+
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         file = new File("res/save.txt");
         bg = new Image("res/images/creditsScreen.png");
         backButton = new Image("res/images/back.png");
-        hover = new Image("res/images/resolutionHighlight.png"); 
-        Play.player.playerName = "GADFREY";
+        hover = new Image("res/images/resolutionHighlight.png");
+        Font font = new Font("Palatino Linotype", Font.BOLD, 26);
+        ttf = new TrueTypeFont(font, true);
     }
-    
+
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        bg.draw(0,0);
-        //ttf.drawString(32.0f, 32.0f, (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
-        g.drawString( Play.player.playerName+": "+Play.player.score, SettingUp.width/10, SettingUp.height-(2*(SettingUp.height/6))+5);
-        for(int ss = 0; ss < 5; ss++){
-            g.drawString( (names.get(ss)+": "+scores.get(ss)), SettingUp.width/10, ((SettingUp.height/6)+(ss*50)) );
+        bg.draw(0, 0);
+        ttf.drawString((SettingUp.width / 10), (SettingUp.height - (2 * (SettingUp.height / 6)) + 5), (Play.player.playerName + ": " + Play.number.format(Play.player.score)), Color.white);
+        //g.drawString(Play.player.playerName + ": " + Play.player.score, SettingUp.width / 10, SettingUp.height - (2 * (SettingUp.height / 6)) + 5);
+        for (int ss = 0; ss < 5; ss++) {
+            ttf.drawString(SettingUp.width / 10, ((SettingUp.height / 6) + (ss * 50)), (names.get(ss) + ": " + scores.get(ss)), Color.white);
+            //g.drawString((names.get(ss) + ": " + scores.get(ss)), SettingUp.width / 10, ((SettingUp.height / 6) + (ss * 50)));
         }
-        g.drawString(prevScore, SettingUp.width/10, SettingUp.height-(SettingUp.height/6));//previous score drawing on screen
-        
-        if(mouseX < 200 && mouseY < 100){
-            backButton.draw(0,0);
-            hover.draw(0,0);
+        //g.drawString(prevScore, SettingUp.width / 10, SettingUp.height - (SettingUp.height / 6));//previous score drawing on screen
+         ttf.drawString(SettingUp.width / 10, SettingUp.height - (SettingUp.height / 6), prevScore, Color.white);
+        if (mouseX < 200 && mouseY < 100) {
+            backButton.draw(0, 0);
+            hover.draw(0, 0);
             if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {
                 file.delete();
                 reload();
                 sbg.enterState(SettingUp.menu);
             }
-        }else{ 
-            backButton.draw(0,0);
+        } else {
+            backButton.draw(0, 0);
         }
     }
-    
+
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        if(start){
+         if (!creditsSoundPlayed) {
+            playSound();
+        }
+        if (start) {
             loadSaves();
             scoreSearch = linearSearch(names, Play.player.playerName);
-            names.add(Play.player.playerName); 
+            names.add(Play.player.playerName);
             scores.add(Play.player.score);
             savesCounter++;
-            if(scoreSearch == -1){
+            if (scoreSearch == -1) {
                 prevScore = "No previous scores found";
-            }else{
+            } else {
                 prevScore = "Previous Score: " + scores.get(scoreSearch);
             }
             System.out.println(prevScore);
@@ -84,13 +89,16 @@ public class Credits extends BasicGameState {
             scores = AscendingSorter.getArray();
             start = false;
         }
+
+       
+
         input = gc.getInput();
         mouseX = input.getMouseX();
         mouseY = input.getMouseY();
-        
+
     }
-    
-    public void reload(){
+
+    public void reload() {
         rewrite();
         Play.isAlive = true;
         Play.deathTime = -1;
@@ -103,59 +111,56 @@ public class Credits extends BasicGameState {
         scores = new ArrayList();
         start = true;
     }
-    public static int linearSearch(ArrayList<String> A, String x){
-        for (int i = 0; i < A.size(); i++){
+
+    public static int linearSearch(ArrayList<String> A, String x) {
+        for (int i = 0; i < A.size(); i++) {
             linearCounter++;
-            if(((A.get(i)).equals(x))) return i;
+            if (((A.get(i)).equals(x))) {
+                return i;
+            }
         }
         return -1;
     }
-    public void loadSaves(){
+
+    public void loadSaves() {
         boolean eof = false;
         String n, s;
-        try{
+        try {
             BufferedReader buff = new BufferedReader(new FileReader("res/save.txt"));
-            while(!eof){
+            while (!eof) {
                 n = buff.readLine();
-                if(n == null){
+                if (n == null) {
                     eof = true;
-                }else{
+                } else {
                     s = buff.readLine();
                     names.add(n);
                     scores.add(Integer.parseInt(s));
                     savesCounter++;
                 }
-                
+
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
-/*Cutten
-777
-Fowler
-666
-Thomson
-555
-GADFREY
-452
-Oehler
-444
-Stephenson
-333
-Baird
-222
-Monaghan
-111*/
-    public void rewrite(){
-        try(PrintWriter writer = new PrintWriter(file)){
-            for(int wr = 0; wr < names.size(); wr++){
+
+    public void rewrite() {
+        try (PrintWriter writer = new PrintWriter(file)) {
+            for (int wr = 0; wr < names.size(); wr++) {
                 writer.println(names.get(wr));
                 System.out.println(names.get(wr));
                 writer.println(scores.get(wr));
                 System.out.println(scores.get(wr));
             }
             writer.close();
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void playSound() {
+        Play.creditsSong.loop();
+        creditsSoundPlayed = true;
+    }
+
 }
