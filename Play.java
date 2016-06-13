@@ -1,4 +1,9 @@
 package strategictoastinsertion;
+/*
+ Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
+ Created: May 18th, 2016
+ Purpose: The state for basic gameplay
+ */
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
@@ -7,13 +12,9 @@ import java.util.ArrayList;
 import java.awt.Font;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
-/*
- Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
- Created: May 18th, 2016
- Purpose: The state for basic gameplay
- */
+
 public class Play extends BasicGameState {
-    //constructor
+
     public Play(int state) {
 
     }
@@ -22,12 +23,12 @@ public class Play extends BasicGameState {
     public int getID() {
         return 1;
     }
-    
-    //variable declarations
+    //Declare variables for later use
     static Music themeSong, menuSong, creditsSong;//music to play throughout game
     Sound fireSound, explosionSound;//sound effects
     static Image bg, playerIcon, dead, pew, explosion;//images
-    Shape skwair, box, birdRect; //shapes used for display and collision detection
+    static Shape skwair, birdRect; //shapes used for display and collision detection
+    Shape box;
     Input input; //variable to hold input
     static Bird player; //the player character
     static Animation bird; //animation used to draw the player character to the screen
@@ -48,6 +49,7 @@ public class Play extends BasicGameState {
     int explosionX, explosionY, framesToExplode; //ints for information regarding bullet explosion
     static ArrayList<Integer> explosionArray = new ArrayList(); //arraylist to hold information relating to bullet explosion
 
+    
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         //initializes variables
@@ -67,7 +69,7 @@ public class Play extends BasicGameState {
     }
 
     @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         Credits.creditsSoundPlayed = false;
         if (!isAlive) {//if the player is dead, move them to the bottom of the screen
             player.moveDown();
@@ -86,10 +88,11 @@ public class Play extends BasicGameState {
             }
             bgX1 -= 2;//moves background
             bgX2 -= 2;
+            
         } else {//if the player is dead, draw the player dead sprite
             dead.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
         }
-
+        g.fill(skwair);//draws background box for bullets remaining (shhhhhh)
         for (ToastBullet currentBullet : bullets) {//loops through arraylist of bullets
             pew = new Image(currentBullet.getImageString());//draws bullets
             pew.draw(currentBullet.getxPos(), currentBullet.getyPos(), bulletHeight, bulletWidth);
@@ -98,7 +101,7 @@ public class Play extends BasicGameState {
             toaster.toasterImg.draw(toaster.xPos, toaster.yPos, Menu.birdHeight, Menu.birdWidth);//draws toasters
         }
         ttf.drawString(SettingUp.width - 200, 10, "Score: " + number.format(player.score));//draws player score 
-        grphcs.fill(skwair);//draws background box for bullets remaining
+        
         //draws bullets remaining
         ttfTwo.drawString(SettingUp.width - 250, SettingUp.height - 30, "Bullets Remaining: " + bulletsRemaining, Color.black);
         if (!(Menu.currentTime > stringDisplayTime + 500)) { //if a toaster has beeen destroyed within a certain amount of time
@@ -245,11 +248,24 @@ public class Play extends BasicGameState {
                     toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));//create toaster
                     toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                     difficulty++;
-                } else if (difficulty > 200) {//maximum difficulty
+                } else if (difficulty > 200 && difficulty <= 250) {//maximum difficulty
                     toasterGen = (int) (Math.random() * 1) + 3;//generate a gold toaster
                     toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));//create toaster
                     toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                     difficulty++;//increase difficulty
+                }else if(difficulty > 250 && difficulty <=300){
+                    toasterGen = (int) (Math.random() * 1) + 3;//generate a gold toaster
+                    toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));//create toaster
+                    toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
+                    difficulty++;//increase difficulty
+                    player.speed = 6;
+                }else if(difficulty > 300 && difficulty <=350){
+                    toasterGen = (int) (Math.random() * 1) + 3;//generate a gold toaster
+                    toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));//create toaster
+                    toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
+                    difficulty++;//increase difficulty
+                    player.speed = 5;
+                    percentChance++;
                 }
             }
         }
@@ -272,7 +288,6 @@ public class Play extends BasicGameState {
         birdRect.setLocation(shapeX, shapeY);//move bird shape to bird 
     }
 
-    //methods for one time per playthrough use 
     public void background() throws SlickException {//method for generating random background
         String imagePath = "src/res/images/cave.png";//default background is cave
         switch (((int) ((Math.random() * 4) - 0))) {//generate a random number between zero and three
@@ -294,6 +309,7 @@ public class Play extends BasicGameState {
         bgX2 = 1000;
         bgY = 0;
     }
+
     public void setBirdArray() throws SlickException {//method that sets animation (runs only once per play)
         arrayMade = true;//sets boolean so method will not be called again
         themeSong.loop();//plays theme song
