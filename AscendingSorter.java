@@ -1,22 +1,21 @@
 package strategictoastinsertion;
 
 import java.util.ArrayList;
-
-/**
- *
- * @author Jonah Monaghan
- * @version 2.0 (12/5/16)
- * Sorts ArrayList from lowest to highest
+/*
+ Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
+ Created: May 18th, 2016
+ Purpose: the class that handles score sorting
  */
 public class AscendingSorter{
-   
+    //attribute
+    static ArrayList <Integer> array;
+    
+    //constructor
     public AscendingSorter(){
         
     }
     
-    
-    
-    static ArrayList <Integer> array;
+    //methods used in the sorting algorithim
     /**
      * 
      * @param arr an array to be sorted
@@ -27,14 +26,12 @@ public class AscendingSorter{
         int highIndex = array.size() - 1;
         quickSortAction(lowIndex, highIndex);
     }
-    
-    
-   /**
+    /**
     * 
     * @param lowIndex the lowest index
     * @param highIndex the highest index
     */
-   private static void quickSortAction(int lowIndex, int highIndex){
+    private static void quickSortAction(int lowIndex, int highIndex){
         int l = lowIndex;
         int h = highIndex;
         int pivot = array.get(lowIndex+(highIndex-lowIndex)/2);
@@ -59,13 +56,12 @@ public class AscendingSorter{
             quickSortAction(l, highIndex);
         }
    }
-   
-   /**
+    /**
     * 
     * @param l the first number
     * @param h the second number
     */
-   private static void exchangeNumbers(int l, int h){
+    private static void exchangeNumbers(int l, int h){
        int tempNum = array.get(l);
        array.set(l, array.get(h));
        array.set(h, tempNum);
@@ -74,7 +70,8 @@ public class AscendingSorter{
        Credits.names.set(h, tempStr);
    }
    
-   public static ArrayList getArray(){
+    //method used to return sorted array to the credits class
+    public static ArrayList getArray(){
        return array;
    }
 }
