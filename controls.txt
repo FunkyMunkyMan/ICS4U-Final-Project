@@ -1,3 +1,0 @@
-Shoot Toast/Bullet: SPACE BAR
-
-Move Bird/Player(Vertical movement only): Up key and Down key (W/S)
