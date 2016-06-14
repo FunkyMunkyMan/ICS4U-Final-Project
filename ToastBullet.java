@@ -69,19 +69,19 @@ public class ToastBullet extends STIObject{
         int random = (int)((Math.random()*4)+0);//generates a random number between 0 and 3
         switch(random){
             case 0: //if the number is 0
-                file = "src/res/images/bread.png";//toast is bread
+                file = "res/images/bread.png";//toast is bread
                 break;
             case 1://if the number is 1
-                file = "src/res/images/waffle.png";//toast is waffle
+                file = "res/images/waffle.png";//toast is waffle
                 break;
             case 2://if the number is 2
-                file = "src/res/images/fork.png";//toast is a fork
+                file = "res/images/fork.png";//toast is a fork
                 break;
             case 3://if the number is 3
-                file = "src/res/images/pepper.png";//toast is a delicious green bell pepper
+                file = "res/images/pepper.png";//toast is a delicious green bell pepper
                 break;
             default://default case: toast is bread
-                file = "src/res/images/bread.png";
+                file = "res/images/bread.png";
                 break;
         }
         return file;//returns the file path

@@ -5,6 +5,7 @@ import org.newdawn.slick.state.*;
 import java.awt.Font;
 import java.io.*;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /*
  Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
  Created: May 18th, 2016
@@ -35,10 +36,10 @@ public class Credits extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        file = new File("src/res/save.txt");//save file that holds user's names and scores
-        bg = new Image("src/res/images/creditsScreen.png");//background screen
-        backButton = new Image("src/res/images/back.png");//back button that takes user to the main menu
-        hover = new Image("src/res/images/hover.png");//appears when user hovers the mouse over the back button
+        file = new File("save.txt");//save file that holds user's names and scores
+        bg = new Image("res/images/creditsScreen.png");//background screen
+        backButton = new Image("res/images/back.png");//back button that takes user to the main menu
+        hover = new Image("res/images/hover.png");//appears when user hovers the mouse over the back button
         Font font = new Font("Palatino Linotype", Font.PLAIN , 28);//creates a nice font to draw the names and scores in
         ttf = new TrueTypeFont(font, true);//makes the font applicable to the screen
     }
@@ -55,7 +56,7 @@ public class Credits extends BasicGameState {
             backButton.draw(0, 0);//draw the button
             hover.draw(0, 0);//and also draw the rectangle that shows the user has their mouse above the 
             if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON) == true) {//if the user clicks over the back button
-                file.delete();//delete the current file
+                file.delete();//delete the current file        
                 reload();//remake the file with the user's data
                 Menu.menuSoundPlayed = false;//restart the music in the menu
                 sbg.enterState(SettingUp.menu);//enter the menu state
@@ -67,7 +68,7 @@ public class Credits extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-         if (!creditsSoundPlayed) {//if the program hasn't started the credits screen music
+        if (!creditsSoundPlayed) {//if the program hasn't started the credits screen music
             playSound();//play the credits music
         }
         if (start) {//a boolean to make sure the following code is only run once
@@ -103,6 +104,7 @@ public class Credits extends BasicGameState {
         Play.player.score = 0;
         Play.player.setxPos(25);
         Play.player.setyPos(100);
+        Play.percentChance = 1;
         ToasterBlock.CURRENT_SPEED = 2;
         names = new ArrayList();
         scores = new ArrayList();
@@ -120,10 +122,7 @@ public class Credits extends BasicGameState {
     public void loadSaves() {
         boolean eof = false;//a boolean that trcks whether or not the file has reached an end
         String n, s;//temporary strings used for transferring names and scores into their arraylists
-        try {
-            //BufferedReader reader = new BufferedReader(new InputStreamReader(Credits.class.getResourceAsStream("src/res/save.txt")));
-            //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            BufferedReader reader = new BufferedReader(new FileReader("src/res/save.txt"));//make a reader to read data from the save file
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))){
             while (!eof) {//keeps reading until the file has ended
                 n = reader.readLine();//read the first field
                 if (n == null) {
@@ -137,18 +136,21 @@ public class Credits extends BasicGameState {
 
             }
         } catch (IOException e) {
-            System.out.println(e);
+            JOptionPane.showMessageDialog(null, e);
         }
     }
     public void rewrite() {
-        try (PrintWriter writer = new PrintWriter(file)) {//opens up a writer
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)))){
+            //opens up a writer
             for (int wr = 0; wr < names.size(); wr++) {//loop for the length of the names arraylist
-                writer.println(names.get(wr));//write the current name to the new file
-                writer.println(scores.get(wr));//write the current score to the new file
+                writer.write(names.get(wr));//write the current name to the new file
+                writer.newLine();
+                writer.write(Integer.toString(scores.get(wr)));//write the current score to the new file
+                writer.newLine();
             }
-            writer.close();//close up the writer
-        } catch (IOException e) {
-            e.printStackTrace();
+            //close up the writer
+                    } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }
     public void playSound() {

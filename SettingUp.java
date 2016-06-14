@@ -37,7 +37,7 @@ public class SettingUp extends StateBasedGame {
         if (app instanceof AppGameContainer) {//check if the app is the correct container to use these sorts of icons
             AppGameContainer appContainer = (AppGameContainer) app;//make an app container to display the icons
             appContainer.setTitle(title);//assign a title to the container
-                String[] icons = {"src/res/images/32.png", "src/res/images/24.png", "src/res/images/16.png"};//set three images for icon usage
+                String[] icons = {"res/images/32.png", "res/images/24.png", "res/images/16.png"};//set three images for icon usage
                 app.setIcons(icons);//set the icons for the program in the taskbar, window pane, etc
         }
         //initialise all the states that the game can be in

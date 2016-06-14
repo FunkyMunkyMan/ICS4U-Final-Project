@@ -15,7 +15,7 @@ public class STIObject {
         xPos = 0;
         yPos = 0;
         speed = 1;
-        imageString = "src/res/images/earmuffs.png";
+        imageString = "res/images/earmuffs.png";
     }
     public STIObject(int xPos, int yPos) {
         this();//constructor call

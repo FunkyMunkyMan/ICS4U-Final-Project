@@ -56,26 +56,18 @@ public class Menu extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         
-        //new Image((InputStream) Menu.class.getClassLoader().getResourceAsStream(""), "");
-        //new Image((ImageData) Menu.class.getClassLoader().getResourceAsStream(""));
-        
         //Assign images
-        baseMenu = new Image("src/res/images/menu.png");
-        //baseMenu = new Image((InputStream) Menu.class.getClassLoader().getResourceAsStream("src/res/images/"), "menu.png", false);
-        //baseMenu = new Image((ImageData) Menu.class.getClassLoader().getResourceAsStream("src/res/images/menu.png"));
-        exit = new Image("src/res/images/exit.png");
-        playNow = new Image("src/res/images/play.png");
-        playNowHover = new Image("src/res/images/playHighlighted.png");
-        selectedCircle = new Image("src/res/images/selectedButton.png");
-        selectedSquare = new Image("src/res/images/hover.png");
+        baseMenu = new Image("res/images/menu.png");
+        exit = new Image("res/images/exit.png");
+        playNow = new Image("res/images/play.png");
+        playNowHover = new Image("res/images/playHighlighted.png");
+        selectedCircle = new Image("res/images/selectedButton.png");
+        selectedSquare = new Image("res/images/hover.png");
         
         //Read in the bird image locations from a file
         try {
-            
-            //BufferedInputStream reader = (BufferedInputStream) Menu.class.getClassLoader().getResourceAsStream("src/res/birdFiles.txt");
-                //BufferedReader reader = new BufferedReader(new InputStreamReader(Menu.class.getResourceAsStream("src/res/birdFiles.txt")));
-                //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            BufferedReader reader = new BufferedReader(new FileReader("src/res/birdFiles.txt"));
+           
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Menu.class.getResourceAsStream("birdFiles.txt")));
             
             for (int l = 0; l < 7; l++) {
         
@@ -86,7 +78,7 @@ public class Menu extends BasicGameState {
             }
         
         } catch (IOException e) {
-            System.out.println(e);
+            JOptionPane.showMessageDialog(null, e);
         }
         
     }
@@ -194,7 +186,7 @@ public class Menu extends BasicGameState {
             playSound(); //Get the beats going
         }
         
-        playNow = new Image("src/res/images/play.png"); //Re assign play now button
+        playNow = new Image("res/images/play.png"); //Re assign play now button
         
         //If the mouse is over the play now button X value
         if ((mouseX >= ((width / 2) - (birdWidth / 2))) && (mouseX <= ((width / 2) + (birdWidth / 2)))) {
@@ -219,7 +211,7 @@ public class Menu extends BasicGameState {
                         startTime = System.currentTimeMillis(); //Start the timer 
                         
                         //Set default bird (pterodactyl) to the one and only EARMUFFS 
-                        Play.player = new Bird("src/res/images/earmuffs.png", "src/res/images/earmuffsShooting.png", "src/res/audio/earmuffsScreech.wav");
+                        Play.player = new Bird("res/images/earmuffs.png", "res/images/earmuffsShooting.png", "res/audio/earmuffsScreech.wav");
 
                     }
                     

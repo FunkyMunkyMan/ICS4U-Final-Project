@@ -10,7 +10,7 @@ public class Bird extends STIObject {
     //attributes
     static int score;//int to hold players score
     int width, height;//ints for birds width, birds height
-    String birdShoot, birdDead = "src/res/images/hiyoko.png";//strings for bird animation
+    String birdShoot, birdDead = "res/images/hiyoko.png";//strings for bird animation
     static String playerName = "Rad Brad";//string for player name (default is GADFREY)
     Sound screech;//sound to play when player dies
     
@@ -20,7 +20,7 @@ public class Bird extends STIObject {
         xPos = 25;
         yPos = 100;
         speed = 7;
-        imageString = "src/res/images/earmuff.png";
+        imageString = "res/images/earmuffs.png";
         score = 0;
         width = 75;
         height = 75;

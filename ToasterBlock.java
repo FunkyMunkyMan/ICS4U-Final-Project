@@ -19,17 +19,17 @@ public class ToasterBlock extends STIObject {
         switch (h) {
             case 1:
                 //if health is one, toaster is a copper toaster
-                imageString = "src/res/images/copper.png";//copper display string
+                imageString = "res/images/copper.png";//copper display string
                 scoreToAdd = 100;//copper score
                 break;
             case 2:
                 //if health is two, toaster is silver
-                imageString = "src/res/images/silver.png";//silver display string
+                imageString = "res/images/silver.png";//silver display string
                 scoreToAdd = 200;//silver score
                 break;
             case 3:
                 //if health is three, toaster is gold
-                imageString = "src/res/images/gold.png";//gold display string
+                imageString = "res/images/gold.png";//gold display string
                 scoreToAdd = 300;//gold score
                 break;
             default:

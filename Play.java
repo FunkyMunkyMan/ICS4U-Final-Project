@@ -1,9 +1,4 @@
 package strategictoastinsertion;
-/*
- Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
- Created: May 18th, 2016
- Purpose: The state for basic gameplay
- */
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
@@ -12,7 +7,11 @@ import java.util.ArrayList;
 import java.awt.Font;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
-
+/*
+ Creators: Matthew Godfrey, Seth Thomson, Jonah Monaghan
+ Created: May 18th, 2016
+ Purpose: The state for basic gameplay
+ */
 public class Play extends BasicGameState {
 
     public Play(int state) {
@@ -26,8 +25,8 @@ public class Play extends BasicGameState {
     //Declare variables for later use
     static Music themeSong, menuSong, creditsSong;//music to play throughout game
     Sound fireSound, explosionSound;//sound effects
-    static Image bg, playerIcon, dead, pew, explosion;//images
-    static Shape skwair, birdRect; //shapes used for display and collision detection
+    static Image bg, playerIcon, dead, pew, explosion, skwair;//images
+    static Shape  birdRect; //shapes used for display and collision detection
     Shape box;
     Input input; //variable to hold input
     static Bird player; //the player character
@@ -37,13 +36,13 @@ public class Play extends BasicGameState {
     static DecimalFormat number; //used in formatting numbers
     static ArrayList<ToastBullet> bullets = new ArrayList();
     boolean fired = false; //boolean to handle whether or not bullet has been fired
-    static int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2, difficulty = 0; //integers used to reference height and width of the bird
+    static int bulletHeight = Menu.birdHeight / 2, bulletWidth = Menu.birdWidth / 2, difficulty = 0, percentChance = 1; //integers used to reference height and width of the bird
     TrueTypeFont ttf, ttfTwo; //fonts used to write text to screen
     static boolean isAlive = true; //boolean to handle if the player is alive
     static ArrayList<ToasterBlock> toasters = new ArrayList(); //an arraylist to hold all of the toasters on the screen
     static ArrayList<Shape> bulletCollision = new ArrayList(); //an arraylist of shapes used in collision detection
     static ArrayList<Shape> toastersCollision = new ArrayList(); //an arraylist of shapes used in collision detection
-    int shapeX, shapeY, rndY, rndGen, toasterGen, percentChance = 1; //integer variables used in toaster generation
+    int shapeX, shapeY, rndY, rndGen, toasterGen; //integer variables used in toaster generation
     static long deathTime = -1, fireTime = -1, stringDisplayTime = -1; //long values used to hold time (to time actions)
     int recentScore, bulletsRemaining = 5;//integers to handle bullet firing
     int explosionX, explosionY, framesToExplode; //ints for information regarding bullet explosion
@@ -53,18 +52,18 @@ public class Play extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         //initializes variables
-        menuSong = new Music("src/res/audio/thiefInTheNight.wav");//initializeds menu music
-        themeSong = new Music("src/res/audio/portent.wav");//initializes game music
-        creditsSong = new Music("src/res/audio/upbeatForever.wav");//initializes credits music
-        fireSound = new Sound("src/res/audio/bulletShot.wav");//initializes shooting sound effect
-        explosionSound = new Sound("src/res/audio/boom.wav");//initializes explosion sound
-        explosion = new Image("src/res/images/explosion.png");//initializes explosion image
+        menuSong = new Music("res/audio/thiefInTheNight.wav");//initializeds menu music
+        themeSong = new Music("res/audio/portent.wav");//initializes game music
+        creditsSong = new Music("res/audio/upbeatForever.wav");//initializes credits music
+        fireSound = new Sound("res/audio/bulletShot.wav");//initializes shooting sound effect
+        explosionSound = new Sound("res/audio/boom.wav");//initializes explosion sound
+        explosion = new Image("res/images/explosion.png");//initializes explosion image
         number = new DecimalFormat("###,###");//initializes number format to format large numbers
         Font font = new Font("Palatino Linotype", Font.BOLD, 26);//initializes font for score
         Font fontTwo = new Font("Palatino LinoType", Font.BOLD, 22);//initializes font for everything else
         ttf = new TrueTypeFont(font, true);
         ttfTwo = new TrueTypeFont(fontTwo, true);
-        skwair = new Rectangle(SettingUp.width - 260, SettingUp.height - 30, 225, 25);//initializes square to tidy up display
+        skwair = new Image("res/images/plaque.png");//initializes square to tidy up display
         background();//method to generate a random background
     }
 
@@ -92,7 +91,6 @@ public class Play extends BasicGameState {
         } else {//if the player is dead, draw the player dead sprite
             dead.draw(player.getxPos(), player.getyPos(), Menu.birdHeight, Menu.birdWidth);
         }
-        g.fill(skwair);//draws background box for bullets remaining (shhhhhh)
         for (ToastBullet currentBullet : bullets) {//loops through arraylist of bullets
             pew = new Image(currentBullet.getImageString());//draws bullets
             pew.draw(currentBullet.getxPos(), currentBullet.getyPos(), bulletHeight, bulletWidth);
@@ -101,7 +99,8 @@ public class Play extends BasicGameState {
             toaster.toasterImg.draw(toaster.xPos, toaster.yPos, Menu.birdHeight, Menu.birdWidth);//draws toasters
         }
         ttf.drawString(SettingUp.width - 200, 10, "Score: " + number.format(player.score));//draws player score 
-        
+        skwair.draw(SettingUp.width - 260, SettingUp.height - 30, 225, 25);
+                
         //draws bullets remaining
         ttfTwo.drawString(SettingUp.width - 250, SettingUp.height - 30, "Bullets Remaining: " + bulletsRemaining, Color.black);
         if (!(Menu.currentTime > stringDisplayTime + 500)) { //if a toaster has beeen destroyed within a certain amount of time
@@ -259,7 +258,7 @@ public class Play extends BasicGameState {
                     toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
                     difficulty++;//increase difficulty
                     player.speed = 6;
-                }else if(difficulty > 300 && difficulty <=350){
+                }else if(difficulty > 300){
                     toasterGen = (int) (Math.random() * 1) + 3;//generate a gold toaster
                     toasters.add(new ToasterBlock(Menu.width - 10, rndY, toasterGen));//create toaster
                     toastersCollision.add(new Rectangle(Menu.width - 10, rndY, Menu.birdWidth, Menu.birdHeight));
@@ -289,19 +288,19 @@ public class Play extends BasicGameState {
     }
 
     public void background() throws SlickException {//method for generating random background
-        String imagePath = "src/res/images/cave.png";//default background is cave
+        String imagePath = "res/images/cave.png";//default background is cave
         switch (((int) ((Math.random() * 4) - 0))) {//generate a random number between zero and three
             case 0://if random is  0
-                imagePath = "src/res/images/cave.png";//background is cave
+                imagePath = "res/images/cave.png";//background is cave
                 break;
             case 1://if random is 1
-                imagePath = "src/res/images/sunset.png";//background is sunset
+                imagePath = "res/images/sunset.png";//background is sunset
                 break;
             case 2://if random is 2
-                imagePath = "src/res/images/starry.png";//background is a beautiful, tranquil starry night. you can feel the wind in your hair as you gaze at the stars, appreciating the infinite beauty of our natural universe while simultaneously revelling in sheer existential terror at the size of it 
+                imagePath = "res/images/starry.png";//background is a beautiful, tranquil starry night. you can feel the wind in your hair as you gaze at the stars, appreciating the infinite beauty of our natural universe while simultaneously revelling in sheer existential terror at the size of it 
                 break;
             case 3://if random is 3
-                imagePath = "src/res/images/beach.png";//beach
+                imagePath = "res/images/beach.png";//beach
                 break;
         }
         bg = new Image(imagePath);//initialize background variables
